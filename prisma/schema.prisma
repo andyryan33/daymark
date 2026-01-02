@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique @db.Uuid
+  isPublic    Boolean  @default(false)
+  displayName String?
+  avatarUrl   String?
+  bio         String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  dayEntries  DayEntry[]
+}
+
+model DayEntry {
+  id        String   @id @default(uuid())
+  userId    String   @db.Uuid
+  profile   Profile  @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  date      DateTime
+  mood      Int
+  notes     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+}
