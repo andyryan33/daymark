@@ -1,70 +1,139 @@
-// app/home/page.tsx
-import prisma from "@/lib/db/prisma";
-import { createClient } from "@/lib/supabase/server";
-import PixelGrid from "@/components/PixelGrid";
-import LogMood from "@/components/LogMood";
+'use client';
 
-export default async function HomePage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import { Spinner } from "@heroui/react";
+import MoodSelector from "@/components/mood-selector"
+import NotesStep from "@/components/notes-step";
+import TodayLoggedView from "@/components/today-logged-view";
+import { MoodValue } from "@/lib/mood"
+import { saveDayEntry } from "@/actions/save-day-entry";
+import { getDayEntry } from "@/lib/db/queries/day-entries";
 
-  if (!user) return null;
+type TodayState = "loading" | "idle" | "notes" | "logged" | "editing"
 
-  const currentYear = new Date().getFullYear();
+export default function TodayPage() {
+    const searchParams = useSearchParams();
 
-  const entries = await prisma.dayEntry.findMany({
-    where: {
-      userId: user.id,
-      date: {
-        gte: new Date(currentYear, 0, 1),
-        lt: new Date(currentYear + 1, 0, 1),
-      },
-    },
-    orderBy: { date: 'asc' }
-  });
+    const selectedDate = useMemo(() => {
+        const param = searchParams.get("date")
+        if (!param) return new Date()
 
-  const formattedEntries = entries.map(e => ({
-    date: e.date.toLocaleDateString('en-CA'), 
-    mood: e.mood,
-    notes: e.notes
-  }));
+        const d = new Date(param)
+        d.setHours(0, 0, 0, 0)
+        return d
+    }, [searchParams]);
 
-  return (
-    <div className="flex flex-col items-center py-16 px-6 space-y-12 min-h-screen bg-background">
-      <header className="text-center space-y-2">
-        <h1 className="text-6xl font-black tracking-tighter text-foreground">
-          {currentYear}
-        </h1>
-        <p className="text-default-500 text-lg font-medium">Your year in pixels.</p>
-      </header>
+    const isToday = selectedDate.toDateString() === new Date().toDateString();
 
-      <section className="w-full max-w-xl">
-        <LogMood />
-      </section>
+    const isFuture = selectedDate > new Date();
 
-      {/* Main Grid Wrapper */}
-      <section className="w-full flex flex-col items-center gap-6">
-        <PixelGrid entries={formattedEntries} />
-        
-        {/* Legend */}
-        <div className="mt-20 w-fit flex flex-wrap justify-center gap-8 p-6 bg-content1 rounded-3xl border border-default-100 shadow-sm">
-          {[
-            { mood: 5, label: "Great", color: "bg-emerald-600" },
-            { mood: 4, label: "Good", color: "bg-lime-500" },
-            { mood: 3, label: "Meh", color: "bg-yellow-400" },
-            { mood: 2, label: "Bad", color: "bg-orange-500" },
-            { mood: 1, label: "Awful", color: "bg-red-600" },
-          ].map((m) => (
-            <div key={m.mood} className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded-full ${m.color}`} />
-              <span className="text-[10px] font-bold text-default-400 uppercase tracking-tight">{m.label}</span>
-              <span className="text-xs font-mono font-bold text-primary">
-                {formattedEntries.filter(e => e.mood === m.mood).length}
-              </span>
+    const [state, setState] = useState<TodayState>("loading");
+    const [mood, setMood] = useState<MoodValue>();
+    const [notes, setNotes] = useState("");
+
+    const dateLabel = selectedDate.toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+    });
+
+    useEffect(() => {
+        const fetchEntry = async () => {
+            if (isFuture) {
+                setState("idle")
+                return
+            }
+
+            const result = await getDayEntry(selectedDate)
+
+            if (result.success && result.data) {
+                setMood(result.data.mood)
+                setNotes(result.data.notes || "")
+                setState("logged")
+            } else {
+                setState("idle")
+            }
+        }
+
+        fetchEntry()
+    }, [selectedDate, isFuture])
+
+    const handleSave = async () => {
+        if (!mood) {
+            // FUTURE: Add a toast/alert here telling the user to pick a mood
+            console.warn("Please select a mood first");
+            return;
+        }
+
+        try {
+            await saveDayEntry(mood, selectedDate, notes);
+            setState("logged");
+        } catch (error) {
+            // FUTURE: Add a toast/alert here telling the user what the error is
+            console.log(error);
+            setState("notes");
+        }
+    }
+
+    // 3. Render Loading State
+    if (state === "loading") {
+        return (
+            <main className="flex min-h-screen flex-col items-center justify-center px-6">
+                <Spinner color="default" size="lg" label="Checking your history..." />
+            </main>
+        )
+    }
+
+    return (
+        <main className="flex min-h-screen flex-col items-center justify-center px-6">
+            <div className="flex w-full max-w-md flex-col items-center gap-10">
+
+                {/* Header */}
+                <div className="text-center space-y-2">
+                    <h1 className="text-2xl font-medium text-gray-700">
+                        {dateLabel}
+                    </h1>
+                    {!isFuture && state !== "logged" && (
+                        <p className="text-neutral-500">
+                            How did this day feel?
+                        </p>
+                    )}
+                </div>
+
+                {/* States */}
+                {(state === "idle" || state === "editing") && !isFuture && (
+                    <MoodSelector value={mood} onChange={(v) => {
+                        setMood(v)
+                        setState("notes")
+                    }} />
+                )}
+
+                {state === "notes" && mood && (
+                    <NotesStep
+                        mood={mood}
+                        notes={notes}
+                        onChange={setNotes}
+                        onSave={handleSave}
+                        onSkip={handleSave}
+                    />
+                )}
+
+                {state === "logged" && mood && (
+                    <TodayLoggedView
+                        mood={mood}
+                        notes={notes}
+                        onEdit={() => setState("editing")}
+                    />
+                )}
+
+                {isFuture && (
+                    <p className="text-sm text-neutral-400">
+                        You can’t log future days.
+                    </p>
+                )}
+
             </div>
-          ))}
-        </div>
-      </section>
-    </div>
-  );
+        </main>
+    );
 }

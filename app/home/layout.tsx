@@ -8,7 +8,7 @@ export default function DashboardLayout({
     return (
         <>
             <Header />
-            <main className="px-6 py-8">
+            <main className="px-6 py-8 bg-[#FAFAFA]">
                 {children}
             </main>
         </>

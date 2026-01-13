@@ -3,16 +3,19 @@
 import { Avatar } from "@heroui/react";
 
 export default function Header() {
-  return (
-    <header className="flex items-center justify-between border-b px-6 py-4">
-        <div className="text-lg font-semibold tracking-wide">
-            Daymark
-        </div>
-        <Avatar
-            name="A"
-            size="sm"
-            className="cursor-pointer"
-        />
-    </header>
-  );
+    return (
+        <header className="flex items-center justify-between px-6 py-4 bg-[#FAFAFA]">
+            <div className="text-lg font-semibold tracking-wide text-gray-700">
+                <a href="/">daymark</a>
+            </div>
+            <div className="text-lg font-semibold tracking-wide text-gray-700">
+                <a href="/home/history">history</a>
+            </div>
+            <Avatar
+                name="A"
+                size="sm"
+                className="cursor-pointer"
+            />
+        </header>
+    );
 }
