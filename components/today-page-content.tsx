@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { Spinner } from "@heroui/react";
+import { Spinner, Button } from "@heroui/react";
 import MoodSelector from "@/components/mood-selector"
 import NotesStep from "@/components/notes-step";
 import TodayLoggedView from "@/components/today-logged-view";
@@ -16,27 +16,34 @@ export default function TodayPageContent() {
     const searchParams = useSearchParams();
 
     const selectedDateString = useMemo(() => {
-    const param = searchParams.get("date");
-    if (param) return param.split('T')[0]; // Ensure it's just YYYY-MM-DD
-    
-    // Default to today's date in local YYYY-MM-DD format
-    const now = new Date();
-    return now.toISOString().split('T')[0];
-}, [searchParams]);
+        const param = searchParams.get("date");
+        if (param) return param.split('T')[0];
 
-    const isToday = selectedDateString === new Date().toDateString();
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        
+        return `${year}-${month}-${day}`;
+    }, [searchParams]);
 
-    const isFuture = selectedDateString > new Date().toDateString();
+    const todayString = useMemo(() => {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }, []);
+
+    const isToday = selectedDateString === todayString;
+    const isFuture = selectedDateString > todayString;
 
     const [state, setState] = useState<TodayState>("loading");
     const [mood, setMood] = useState<MoodValue>();
     const [notes, setNotes] = useState("");
 
     const dateLabel = new Date(`${selectedDateString}T12:00:00`).toLocaleDateString(undefined, {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-});
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+    });
 
     useEffect(() => {
         const fetchEntry = async () => {
@@ -57,7 +64,7 @@ export default function TodayPageContent() {
         }
 
         fetchEntry()
-    }, [selectedDateString, isFuture])
+    }, [selectedDateString, isFuture]);
 
     const handleSave = async () => {
         if (!mood) {
@@ -128,9 +135,17 @@ export default function TodayPageContent() {
                 )}
 
                 {isFuture && (
-                    <p className="text-sm text-neutral-400">
-                        You can’t log future days.
-                    </p>
+                    <div className="text-center space-y-4">
+                        <p className="text-sm text-neutral-400">
+                            You can’t log future days.
+                        </p>
+                        <Button 
+                            variant="flat" 
+                            onPress={() => window.location.href = '/home'}
+                        >
+                            Back to Today
+                        </Button>
+                    </div>
                 )}
 
             </div>
