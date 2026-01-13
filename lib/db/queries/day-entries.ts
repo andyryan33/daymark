@@ -12,14 +12,13 @@ type GetDayEntryResponse = {
     } | null;
 };
 
-export async function getDayEntry(date: Date): Promise<GetDayEntryResponse> {
+export async function getDayEntry(dateString: string): Promise<GetDayEntryResponse> {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) return { success: false };
 
-    const entryDate = new Date(date);
-    entryDate.setHours(0, 0, 0, 0);
+    const entryDate = new Date(`${dateString}T00:00:00Z`);
 
     try {
         const entry = await db.dayEntry.findUnique({
@@ -48,10 +47,10 @@ export async function getDayEntry(date: Date): Promise<GetDayEntryResponse> {
 }
 
 export async function getDayEntries(limit = 30) {
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) return []
+    if (!user) return [];
 
     return db.dayEntry.findMany({
         where: { userId: user.id },
@@ -62,5 +61,5 @@ export async function getDayEntries(limit = 30) {
             mood: true,
             notes: true,
         },
-    })
+    });
 }

@@ -15,28 +15,28 @@ type TodayState = "loading" | "idle" | "notes" | "logged" | "editing"
 export default function TodayPageContent() {
     const searchParams = useSearchParams();
 
-    const selectedDate = useMemo(() => {
-        const param = searchParams.get("date")
-        if (!param) return new Date()
+    const selectedDateString = useMemo(() => {
+    const param = searchParams.get("date");
+    if (param) return param.split('T')[0]; // Ensure it's just YYYY-MM-DD
+    
+    // Default to today's date in local YYYY-MM-DD format
+    const now = new Date();
+    return now.toISOString().split('T')[0];
+}, [searchParams]);
 
-        const d = new Date(param)
-        d.setHours(0, 0, 0, 0)
-        return d
-    }, [searchParams]);
+    const isToday = selectedDateString === new Date().toDateString();
 
-    const isToday = selectedDate.toDateString() === new Date().toDateString();
-
-    const isFuture = selectedDate > new Date();
+    const isFuture = selectedDateString > new Date().toDateString();
 
     const [state, setState] = useState<TodayState>("loading");
     const [mood, setMood] = useState<MoodValue>();
     const [notes, setNotes] = useState("");
 
-    const dateLabel = selectedDate.toLocaleDateString(undefined, {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-    });
+    const dateLabel = new Date(`${selectedDateString}T12:00:00`).toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+});
 
     useEffect(() => {
         const fetchEntry = async () => {
@@ -45,7 +45,7 @@ export default function TodayPageContent() {
                 return
             }
 
-            const result = await getDayEntry(selectedDate)
+            const result = await getDayEntry(selectedDateString);
 
             if (result.success && result.data) {
                 setMood(result.data.mood)
@@ -57,7 +57,7 @@ export default function TodayPageContent() {
         }
 
         fetchEntry()
-    }, [selectedDate, isFuture])
+    }, [selectedDateString, isFuture])
 
     const handleSave = async () => {
         if (!mood) {
@@ -67,7 +67,7 @@ export default function TodayPageContent() {
         }
 
         try {
-            await saveDayEntry(mood, selectedDate, notes);
+            await saveDayEntry(mood, selectedDateString, notes);
             setState("logged");
         } catch (error) {
             // FUTURE: Add a toast/alert here telling the user what the error is

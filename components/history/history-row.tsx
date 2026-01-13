@@ -7,9 +7,22 @@ export default function HistoryRow({ entry }: { entry: any }) {
     const router = useRouter()
     const mood = MOODS.find(m => m.value === entry.mood)
 
+    const displayDate = new Date(entry.date).toLocaleDateString(undefined, {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        timeZone: "UTC",
+    });
+
+    const handleNavigate = () => {
+        const d = new Date(entry.date);
+        const dateString = d.toISOString().split('T')[0]; 
+        router.push(`/home?date=${dateString}`);
+    };
+
     return (
         <button
-            onClick={() => router.push(`/home?date=${entry.date.toISOString()}`)}
+            onClick={handleNavigate}
             className="flex items-center gap-4 py-4 text-left hover:bg-neutral-50 transition rounded-lg px-2"
         >
             {/* Mood dot */}
@@ -21,11 +34,7 @@ export default function HistoryRow({ entry }: { entry: any }) {
             {/* Date */}
             <div className="flex flex-col">
                 <span className="text-sm font-medium text-neutral-700">
-                    {new Date(entry.date).toLocaleDateString(undefined, {
-                        weekday: "short",
-                        month: "short",
-                        day: "numeric",
-                    })}
+                    {displayDate}
                 </span>
 
                 {entry.notes && (

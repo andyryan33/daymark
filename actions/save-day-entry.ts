@@ -11,7 +11,7 @@ type SaveDayEntryResponse = {
     data?: any;
 };
 
-export async function saveDayEntry( mood: MoodValue, date: Date, notes?: string ): Promise<SaveDayEntryResponse> {
+export async function saveDayEntry( mood: MoodValue, dateString: string, notes?: string ): Promise<SaveDayEntryResponse> {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -19,8 +19,7 @@ export async function saveDayEntry( mood: MoodValue, date: Date, notes?: string 
         return { success: false, message: "Unauthorized" };
     }
 
-    const entryDate = new Date(date);
-    entryDate.setHours(0, 0, 0, 0);
+    const entryDate = new Date(`${dateString}T00:00:00Z`);
 
     try {
         const entry = await db.dayEntry.upsert({
