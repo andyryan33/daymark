@@ -45,7 +45,7 @@ export async function proxy(request: NextRequest) {
 
   // 2. 🚫 Not logged in and trying to access protected route
   if (!user && request.nextUrl.pathname.startsWith("/home")) {
-    const loginUrl = new URL("/auth/login", request.url);
+    const loginUrl = new URL("/", request.url);
     return NextResponse.redirect(loginUrl);
   }
 
