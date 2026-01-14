@@ -88,7 +88,8 @@ export default function TodayPageContent({ initialData, selectedDateString, toda
                         <Button 
                             as={NextLink} // Use NextLink as the base
                             href="/home"  // Direct path
-                            variant="flat"
+                            variant="light"
+                            color="primary"
                         >
                             Back to Today
                         </Button>

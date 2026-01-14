@@ -4,6 +4,7 @@ import { Button } from "@heroui/react";
 import { signInWithGoogle } from "@/lib/supabase/client";
 import { LogIn, Heart, Calendar, LineChart } from "lucide-react";
 import PreviewGrid from "@/components/landing/preview-grid";
+import AboutModal from "@/components/landing/about-modal";
 
 export default function LandingPage() {
     return (
@@ -84,8 +85,11 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <footer className="py-10 text-center text-[10px] text-neutral-400 uppercase tracking-widest">
-                &copy; {new Date().getFullYear()} daymark
+            <footer className="py-10 flex flex-col items-center gap-2">
+                <AboutModal />
+                <p className="text-[10px] text-neutral-400 uppercase tracking-widest">
+                    &copy; {new Date().getFullYear()} daymark
+                </p>
             </footer>
         </div>
     );

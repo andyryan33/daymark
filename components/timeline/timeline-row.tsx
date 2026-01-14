@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useRouter } from "next/navigation"
 import { MOODS } from "@/lib/mood"
@@ -23,7 +23,7 @@ export default function TimelineRow({ entry }: { entry: any }) {
     return (
         <button
             onClick={handleNavigate}
-            className="flex items-center gap-4 py-4 text-left hover:bg-neutral-50 transition rounded-lg px-2"
+            className="flex items-center gap-4 py-4 text-left hover:bg-neutral-50 transition rounded-lg px-2 cursor-pointer"
         >
             {/* Mood dot */}
             <span
@@ -44,5 +44,5 @@ export default function TimelineRow({ entry }: { entry: any }) {
                 )}
             </div>
         </button>
-    )
+    );
 }
