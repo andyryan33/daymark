@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
     title: "daymark",
     description: "how was your day?",
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "default",
+    },
 };
 
 export default function RootLayout({
@@ -24,8 +28,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <html lang="en" className="bg-[#FAFAFA]">
+            <body className={`${geistSans.className} ${geistMono.variable} antialiased`}>
                 <Providers>{children}</Providers>
             </body>
         </html>

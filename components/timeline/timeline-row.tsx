@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation"
 import { MOODS } from "@/lib/mood"
 
-export default function HistoryRow({ entry }: { entry: any }) {
+export default function TimelineRow({ entry }: { entry: any }) {
     const router = useRouter()
     const mood = MOODS.find(m => m.value === entry.mood)
 

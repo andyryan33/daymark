@@ -1,21 +1,116 @@
 'use client';
 
-import { Avatar } from "@heroui/react";
+import { 
+    Navbar, 
+    NavbarBrand, 
+    NavbarContent, 
+    NavbarItem, 
+    Link, 
+    Avatar, 
+    Dropdown, 
+    DropdownTrigger, 
+    DropdownMenu, 
+    DropdownItem, 
+    DropdownSection
+} from "@heroui/react";
+import { usePathname, useRouter } from "next/navigation";
+import NextLink from "next/link"; // 1. Import NextLink
+import { createClient } from "@/lib/supabase/client"; // Adjust path as needed
+import { useUser } from "@/lib/hooks/use-user";
 
 export default function Header() {
+    const { fullName, avatarUrl } = useUser();
+    const pathname = usePathname();
+    const router = useRouter();
+    const supabase = createClient();
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        router.push("/");
+        router.refresh();
+    };
+
+    const navLinks = [
+        { label: "Today", href: "/home" },
+        { label: "Timeline", href: "/home/timeline" },
+        { label: "Year", href: "/home/year" },
+    ];
+
     return (
-        <header className="flex items-center justify-between px-6 py-4 bg-[#FAFAFA]">
-            <div className="text-lg font-semibold tracking-wide text-gray-700">
-                <a href="/">daymark</a>
-            </div>
-            <div className="text-lg font-semibold tracking-wide text-gray-700">
-                <a href="/home/history">history</a>
-            </div>
-            <Avatar
-                name="A"
-                size="sm"
-                className="cursor-pointer"
-            />
-        </header>
+        <Navbar 
+             
+            maxWidth="xl" 
+            className="bg-[#FAFAFA]/75 backdrop-blur-md"
+            classNames={{
+                item: [
+                    "flex",
+                    "relative",
+                    "h-full",
+                    "items-center",
+                    "data-[active=true]:after:content-['']",
+                    "data-[active=true]:after:absolute",
+                    "data-[active=true]:after:bottom-0",
+                    "data-[active=true]:after:left-0",
+                    "data-[active=true]:after:right-0",
+                    "data-[active=true]:after:h-[2px]",
+                    "data-[active=true]:after:rounded-[2px]",
+                    "data-[active=true]:after:bg-primary",
+                ],
+            }}
+        >
+            <NavbarBrand>
+                <Link as={NextLink} href="/home" className="text-primary font-bold text-xl tracking-tighter">
+                    daymark
+                </Link>
+            </NavbarBrand>
+
+            <NavbarContent className="hidden sm:flex gap-8" justify="center">
+                {navLinks.map((link) => (
+                    <NavbarItem key={link.href} isActive={pathname === link.href}>
+                        <Link 
+                            as={NextLink}
+                            href={link.href} 
+                            color={pathname === link.href ? "primary" : "foreground"}
+                            className="text-sm font-medium"
+                        >
+                            {link.label}
+                        </Link>
+                    </NavbarItem>
+                ))}
+            </NavbarContent>
+
+            <NavbarContent justify="end">
+                <Dropdown placement="bottom-end">
+                    <DropdownTrigger>
+                        <Avatar
+                            isBordered
+                            as="button"
+                            className="transition-transform"
+                            color="primary"
+                            name={fullName} 
+                            size="sm"
+                            src={avatarUrl}
+                        />
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Profile Actions" variant="faded">
+                        <DropdownSection title="Signed in as">
+                        <DropdownItem key="profile">
+                            <p className="">{fullName}</p>
+                        </DropdownItem>
+                        </DropdownSection>
+
+                        <DropdownSection title="Settings">
+                            <DropdownItem 
+                                key="logout" 
+                                color="danger" 
+                                onPress={handleLogout}
+                            >
+                                Log Out
+                            </DropdownItem>
+                        </DropdownSection>
+                    </DropdownMenu>
+                </Dropdown>
+            </NavbarContent>
+        </Navbar>
     );
 }

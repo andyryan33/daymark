@@ -1,7 +1,7 @@
-import HistoryRow from "./history-row"
+import TimelineRow from "./timeline-row"
 import { groupByWeek } from "@/lib/utils";
 
-export default function HistoryList({ entries }: { entries: any[] }) {
+export default function TimelineList({ entries }: { entries: any[] }) {
     const weeks = groupByWeek(entries);
 
     return (
@@ -16,7 +16,7 @@ export default function HistoryList({ entries }: { entries: any[] }) {
 
                     <div className="flex flex-col divide-y divide-neutral-200">
                         {week.map(entry => (
-                            <HistoryRow
+                            <TimelineRow
                                 key={entry.date.toString()}
                                 entry={entry}
                             />

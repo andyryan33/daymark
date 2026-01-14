@@ -63,3 +63,26 @@ export async function getDayEntries(limit = 30) {
         },
     });
 }
+
+export async function getYearlyEntries(year: number) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return [];
+
+    const startDate = new Date(`${year}-01-01T00:00:00Z`);
+    const endDate = new Date(`${year}-12-31T23:59:59Z`);
+
+    return db.dayEntry.findMany({
+        where: {
+            userId: user.id,
+            date: {
+                gte: startDate,
+                lte: endDate,
+            },
+        },
+        select: {
+            date: true,
+            mood: true,
+        },
+    });
+}

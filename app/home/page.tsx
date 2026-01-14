@@ -1,17 +1,27 @@
-'use client';
+import { getDayEntry } from "@/lib/db/queries/day-entries";
+import TodayPageContent from "@/components/home/today-page-content";
 
-import { Suspense } from "react";
-import { Spinner } from "@heroui/react";
-import TodayPageContent from "@/components/today-page-content";
+type TodayPageProps = {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
-export default function TodayPage() {
+export default async function TodayPage({ searchParams }: TodayPageProps) {
+    const params = await searchParams;
+    const dateParam = typeof params.date === 'string' ? params.date : null;
+    
+    const now = new Date();
+    const todayString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    const selectedDate = dateParam || todayString;
+
+    const entryResult = await getDayEntry(selectedDate);
+    const initialData = entryResult.success ? entryResult.data : null;
+
     return (
-        <Suspense fallback={
-            <main className="flex min-h-screen flex-col items-center justify-center px-6">
-                <Spinner color="default" size="lg" label="Loading..." />
-            </main>
-        }>
-            <TodayPageContent />
-        </Suspense>
+            <TodayPageContent 
+                key={selectedDate}
+                initialData={initialData} 
+                selectedDateString={selectedDate}
+                todayString={todayString}
+            />
     );
 }
