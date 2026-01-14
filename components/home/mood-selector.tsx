@@ -8,11 +8,12 @@ import { MOODS, MoodValue } from "@/lib/mood"
 type Props = {
     value?: MoodValue
     onChange: (value: MoodValue) => void
+    onCancel?: () => void // New optional prop
 }
 
-export default function MoodSelector({ value, onChange }: Props) {
+export default function MoodSelector({ value, onChange, onCancel }: Props) {
     return (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-8">
             <div className="flex items-center justify-center gap-4">
                 {MOODS.map((mood) => {
                     const selected = value === mood.value
@@ -30,30 +31,39 @@ export default function MoodSelector({ value, onChange }: Props) {
                                     mood.color,
                                     "transition-all duration-300 ease-out",
                                     selected
-                                    ? "scale-105"
-                                    : "opacity-40 hover:opacity-70"
+                                    ? "scale-110 ring-4 ring-offset-2 ring-slate-200"
+                                    : "opacity-40 hover:opacity-100 hover:scale-105"
                                 )}
                             >
-                                {selected && (
-                                    <span
-                                        className="absolute inset-0 rounded-full ring-8 ring-black/5"
-                                        aria-hidden
-                                    />
-                                )}
+                                <span className="sr-only">{mood.label}</span>
                             </Button>
                         </motion.div>
                     )
                 })}
             </div>
-            <div className="h-5">
-                <motion.div
-                    initial={false}
-                    animate={value ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="text-sm text-neutral-500 text-center"
-                >
-                    {MOODS.find((m) => m.value === value)?.label ?? "\u00A0"}
-                </motion.div>
+            
+            <div className="flex flex-col items-center gap-4">
+                <div className="h-6">
+                    <motion.div
+                        initial={false}
+                        animate={value ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="text-lg font-medium text-neutral-600 text-center"
+                    >
+                        {MOODS.find((m) => m.value === value)?.label ?? "\u00A0"}
+                    </motion.div>
+                </div>
+
+                {onCancel && (
+                    <Button 
+                        variant="light"
+                        size="sm" 
+                        onPress={onCancel}
+                        className="text-neutral-500"
+                    >
+                        Cancel Edit
+                    </Button>
+                )}
             </div>
         </div>
     );

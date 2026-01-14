@@ -2,6 +2,8 @@
 
 import { Button, Textarea } from "@heroui/react";
 import { MoodValue, MOODS } from "@/lib/mood";
+import { motion } from "framer-motion";
+import { ChevronLeft } from "lucide-react";
 
 type Props = {
     mood: MoodValue
@@ -9,6 +11,7 @@ type Props = {
     onChange: (value: string) => void
     onSave: () => void
     onSkip: () => void
+    onBack: () => void // New prop
 }
 
 export default function NotesStep({
@@ -17,34 +20,62 @@ export default function NotesStep({
     onChange,
     onSave,
     onSkip,
+    onBack
 }: Props) {
     const moodMeta = MOODS.find((m) => m.value === mood);
 
     return (
-        <div className="w-full space-y-6">
-            <p className="text-center text-sm text-neutral-500">
-                Feeling <span className="font-medium">{moodMeta?.label}</span>
-            </p>
-
-            <div className="flex flex-col items-center">
-                <div className={`h-16 w-16 rounded-full ${moodMeta?.color}`} />
+        <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full space-y-8"
+        >
+            {/* Visual Confirmation of Mood */}
+            <div className="flex flex-col items-center gap-3">
+                <div className={`h-16 w-16 rounded-full ${moodMeta?.color} ring-4 ring-offset-2 ring-slate-200 shadow-lg shadow-neutral-200`} />
+                <p className="text-center text-sm text-neutral-500">
+                    Feeling <span className="font-bold text-neutral-700">{moodMeta?.label}</span>
+                </p>
             </div>
 
+            {/* Note Input */}
             <Textarea
                 value={notes}
                 onValueChange={onChange}
                 placeholder="Anything you want to remember about today?"
                 minRows={4}
+                size="lg"
             />
 
-            <div className="flex justify-between">
-                <Button variant="light" color="primary" onPress={onSkip}>
-                    Skip
+            {/* Action Bar */}
+            <div className="flex items-center justify-between pt-2">
+                <Button 
+                    variant="light"
+                    onPress={onBack}
+                    startContent={<ChevronLeft size={20} />}
+                    className="text-neutral-500"
+                >
+                    Back
                 </Button>
-                <Button variant="light" color="primary" onPress={onSave}>
-                    Save
-                </Button>
+                
+                <div className="flex gap-3">
+                    <Button 
+                        color="primary"
+                        variant="light"
+                        onPress={onSkip} 
+                    >
+                        Skip Note
+                    </Button>
+                    <Button 
+                        color="primary"
+                        variant="light"
+                        onPress={onSave}
+                    >
+                        Save Entry
+                    </Button>
+                </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

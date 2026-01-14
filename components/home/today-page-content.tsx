@@ -1,9 +1,9 @@
 'use client';
 
-import NextLink from "next/link"; // Import this at the top
-import { useState, useMemo } from "react";
-import { Button, Link } from "@heroui/react";
-import { useRouter } from "next/navigation"; // Use router instead of window.location
+import NextLink from "next/link"; 
+import { useState, useEffect } from "react";
+import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation"; 
 import MoodSelector from "./mood-selector";
 import NotesStep from "./notes-step";
 import TodayLoggedView from "./today-logged-view";
@@ -20,10 +20,8 @@ interface Props {
 
 export default function TodayPageContent({ initialData, selectedDateString, todayString }: Props) {
     const router = useRouter();
-
     const isFuture = selectedDateString > todayString;
 
-    // Initialize state directly from props
     const [state, setState] = useState<TodayState>(initialData ? "logged" : "idle");
     const [mood, setMood] = useState<MoodValue | undefined>(initialData?.mood);
     const [notes, setNotes] = useState(initialData?.notes || "");
@@ -33,18 +31,44 @@ export default function TodayPageContent({ initialData, selectedDateString, toda
         month: "long",
         day: "numeric",
     });
+    
+    useEffect(() => {
+         setState(initialData ? "logged" : "idle");
+         setMood(initialData?.mood);
+         setNotes(initialData?.notes || "");
+    }, [initialData, selectedDateString]);
 
     const handleSave = async () => {
         if (!mood) return;
         try {
             await saveDayEntry(mood, selectedDateString, notes);
             setState("logged");
-            router.refresh(); // Tells Next.js to update the server cache
+            router.refresh(); 
         } catch (error) {
             console.error(error);
             setState("notes");
         }
     }
+
+    const handleBack = () => {
+        if (initialData) {
+            // EDIT FLOW: Reset to original data visual, stay in editing mode
+            setMood(initialData.mood);
+            setNotes(initialData.notes || "");
+            setState("editing");
+        } else {
+            setState("idle");
+        }
+    };
+
+    // NEW: Completely exit edit mode
+    const handleCancel = () => {
+        if (initialData) {
+            setMood(initialData.mood);
+            setNotes(initialData.notes || "");
+            setState("logged"); // Go straight back to view mode
+        }
+    };
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center px-6">
@@ -56,14 +80,20 @@ export default function TodayPageContent({ initialData, selectedDateString, toda
                     )}
                 </div>
 
-                {/* States */}
+                {/* 1. Mood Selector */}
                 {(state === "idle" || state === "editing") && !isFuture && (
-                    <MoodSelector value={mood} onChange={(v) => {
-                        setMood(v)
-                        setState("notes")
-                    }} />
+                    <MoodSelector 
+                        value={mood} 
+                        onChange={(v) => {
+                            setMood(v)
+                            setState("notes")
+                        }}
+                        // Only pass onCancel if we are actually editing existing data
+                        onCancel={state === "editing" ? handleCancel : undefined}
+                    />
                 )}
 
+                {/* 2. Notes Step */}
                 {state === "notes" && mood && (
                     <NotesStep
                         mood={mood}
@@ -71,9 +101,11 @@ export default function TodayPageContent({ initialData, selectedDateString, toda
                         onChange={setNotes}
                         onSave={handleSave}
                         onSkip={handleSave}
+                        onBack={handleBack} 
                     />
                 )}
 
+                {/* 3. Logged View */}
                 {state === "logged" && mood && (
                     <TodayLoggedView
                         mood={mood}
@@ -86,8 +118,8 @@ export default function TodayPageContent({ initialData, selectedDateString, toda
                     <div className="text-center space-y-4">
                         <p className="text-sm text-neutral-400">You can’t log future days.</p>
                         <Button 
-                            as={NextLink} // Use NextLink as the base
-                            href="/home"  // Direct path
+                            as={NextLink} 
+                            href="/home" 
                             variant="light"
                             color="primary"
                         >
