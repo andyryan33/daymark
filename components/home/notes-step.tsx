@@ -34,10 +34,10 @@ export default function NotesStep({
       />
 
       <div className="flex justify-between">
-        <Button variant="light" onPress={onSkip}>
+        <Button variant="light" color="primary" onPress={onSkip}>
           Skip
         </Button>
-        <Button color="primary" onPress={onSave}>
+        <Button variant="light" color="primary" onPress={onSave}>
           Save
         </Button>
       </div>

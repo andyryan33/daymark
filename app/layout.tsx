@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "daymark",
-    description: "how was your day?",
+    description: "how did this day feel?",
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",
