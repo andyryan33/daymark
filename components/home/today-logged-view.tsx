@@ -32,7 +32,7 @@ export default function TodayLoggedView({ mood, notes, onEdit }: Props) {
         </p>
       )}
 
-      <Button variant="light" onPress={onEdit}>
+      <Button color="primary" variant="light" onPress={onEdit}>
         Edit
       </Button>
     </div>
