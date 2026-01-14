@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { MOODS } from "@/lib/mood";
 import { Tooltip } from "@heroui/react";
+import { motion } from "framer-motion";
 
 export default function YearGrid({ year, entries }: { year: number, entries: any[] }) {
     const months = Array.from({ length: 12 }, (_, i) => i);
@@ -19,8 +20,6 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
     // Helper to get color for a specific day
     const getMoodColor = (month: number, day: number) => {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        // Using a Map or object for lookups is faster than .find() inside a 365-loop, 
-        // but for now, we'll stick to your logic with a minor fix for the date comparison.
         const entry = entries.find(e => {
             const entryDate = new Date(e.date).toISOString().split('T')[0];
             return entryDate === dateStr;
@@ -30,7 +29,12 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
     };
 
     return (
-        <div className="w-full space-y-8">
+        <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="w-full space-y-8"
+        >
             
             {/* 12-Month Responsive Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -75,6 +79,6 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
                     );
                 })}
             </div>
-        </div>
+        </motion.div>
     );
 }

@@ -1,3 +1,6 @@
+'use client';
+
+import { motion } from "framer-motion";
 import TimelineRow from "./timeline-row"
 import { groupByWeek } from "@/lib/utils";
 
@@ -5,7 +8,12 @@ export default function TimelineList({ entries }: { entries: any[] }) {
     const weeks = groupByWeek(entries);
 
     return (
-        <div className="flex flex-col gap-6">
+        <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="flex flex-col gap-6"
+        >
             {weeks.map((week, i) => (
                 <div key={i}>
                     <p className="text-xs uppercase tracking-wide text-neutral-400 mb-2">
@@ -24,6 +32,6 @@ export default function TimelineList({ entries }: { entries: any[] }) {
                     </div>
                 </div>
             ))}
-        </div>
+        </motion.div>
     );
 }

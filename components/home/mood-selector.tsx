@@ -8,7 +8,7 @@ import { MOODS, MoodValue } from "@/lib/mood"
 type Props = {
     value?: MoodValue
     onChange: (value: MoodValue) => void
-    onCancel?: () => void // New optional prop
+    onCancel?: () => void
 }
 
 export default function MoodSelector({ value, onChange, onCancel }: Props) {
@@ -21,7 +21,12 @@ export default function MoodSelector({ value, onChange, onCancel }: Props) {
     };
 
     return (
-        <div className="flex flex-col items-center gap-8">
+        <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="flex flex-col items-center gap-8"
+        >
             <div className="flex items-center justify-center gap-4">
                 {MOODS.map((mood) => {
                     const selected = value === mood.value
@@ -56,7 +61,7 @@ export default function MoodSelector({ value, onChange, onCancel }: Props) {
                         initial={false}
                         animate={value ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
                         transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="text-lg font-medium text-neutral-600 text-center"
+                        className="font-medium text-neutral-600 text-center"
                     >
                         {MOODS.find((m) => m.value === value)?.label ?? "\u00A0"}
                     </motion.div>
@@ -67,12 +72,12 @@ export default function MoodSelector({ value, onChange, onCancel }: Props) {
                         variant="light"
                         size="sm" 
                         onPress={onCancel}
-                        className="text-neutral-500"
+                        className="text-neutral-500 mt-6"
                     >
                         Cancel Edit
                     </Button>
                 )}
             </div>
-        </div>
+        </motion.div>
     );
 }

@@ -59,20 +59,20 @@ export default function NotesStep({
                     Back
                 </Button>
                 
-                <div className="flex gap-3">
+                <div className="flex gap-2">
                     <Button 
                         color="primary"
                         variant="light"
                         onPress={onSkip} 
                     >
-                        Skip Note
+                        Skip
                     </Button>
                     <Button 
                         color="primary"
                         variant="light"
                         onPress={onSave}
                     >
-                        Save Entry
+                        Save
                     </Button>
                 </div>
             </div>
