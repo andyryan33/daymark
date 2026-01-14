@@ -15,11 +15,10 @@ type TodayState = "idle" | "notes" | "logged" | "editing"
 interface Props {
     initialData: any;
     selectedDateString: string;
-    todayString: string;
     isInitialDefault: boolean;
 }
 
-export default function TodayPageContent({ initialData, selectedDateString, todayString, isInitialDefault }: Props) {
+export default function TodayPageContent({ initialData, selectedDateString, isInitialDefault }: Props) {
 const router = useRouter();
 
     // 1. Calculate the REAL "Today" for Woodbury, MN (or wherever the user is)
