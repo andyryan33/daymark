@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { getDayEntry } from "@/lib/db/queries/day-entries";
+import { getProfileStatus } from "@/lib/db/queries/user"; // Import the new query
 import TodayPageContent from "@/components/home/today-page-content";
 
 type TodayPageProps = {
@@ -7,16 +8,16 @@ type TodayPageProps = {
 }
 
 export default async function TodayPage({ searchParams }: TodayPageProps) {
-const params = await searchParams;
+    const params = await searchParams;
     const dateParam = typeof params.date === 'string' ? params.date : null;
     
-    // 1. Get timezone from cookie, default to UTC if not set yet
+    // 1. Get timezone
     const cookieStore = await cookies();
     const userTz = cookieStore.get('user-tz')?.value || 'UTC';
 
-    // 2. Calculate "Today" based on that timezone
+    // 2. Calculate "Today"
     const now = new Date();
-    const formatter = new Intl.DateTimeFormat('en-CA', { // en-CA gives YYYY-MM-DD
+    const formatter = new Intl.DateTimeFormat('en-CA', { 
         timeZone: userTz,
         year: 'numeric',
         month: '2-digit',
@@ -26,9 +27,14 @@ const params = await searchParams;
     const todayString = formatter.format(now); 
     const selectedDate = dateParam || todayString;
 
-    // 3. Fetch data
-    const entryResult = await getDayEntry(selectedDate);
+    // 3. Fetch data (Run in parallel for speed)
+    const [entryResult, profileStatus] = await Promise.all([
+        getDayEntry(selectedDate),
+        getProfileStatus()
+    ]);
+    
     const initialData = entryResult.success ? entryResult.data : null;
+    const showWelcome = !profileStatus.hasSeenWelcome; // Determine if we should show the modal
 
     return (
         <TodayPageContent 
@@ -36,6 +42,7 @@ const params = await searchParams;
             initialData={initialData} 
             selectedDateString={selectedDate}
             todayString={todayString}
+            showWelcome={showWelcome} // Pass it here
         />
     );
 }

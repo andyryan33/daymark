@@ -12,6 +12,14 @@ type Props = {
 }
 
 export default function MoodSelector({ value, onChange, onCancel }: Props) {
+    const handleSelection = (moodValue: MoodValue) => {
+        if (typeof navigator !== "undefined" && navigator.vibrate) {
+            navigator.vibrate(15);
+        }
+        
+        onChange(moodValue);
+    };
+
     return (
         <div className="flex flex-col items-center gap-8">
             <div className="flex items-center justify-center gap-4">
@@ -25,7 +33,7 @@ export default function MoodSelector({ value, onChange, onCancel }: Props) {
                         >
                             <Button
                                 isIconOnly
-                                onPress={() => onChange(mood.value)}
+                                onPress={() => handleSelection(mood.value)}
                                 className={clsx(
                                     "relative h-14 w-14 rounded-full p-0",
                                     mood.color,

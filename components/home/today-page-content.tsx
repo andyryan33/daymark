@@ -9,6 +9,7 @@ import NotesStep from "./notes-step";
 import TodayLoggedView from "./today-logged-view";
 import { MoodValue } from "@/lib/mood"
 import { saveDayEntry } from "@/actions/save-day-entry";
+import WelcomeModal from "@/components/home/welcome-modal";
 
 type TodayState = "idle" | "notes" | "logged" | "editing"
 
@@ -16,9 +17,10 @@ interface Props {
     initialData: any;
     selectedDateString: string;
     todayString: string;
+    showWelcome?: boolean;
 }
 
-export default function TodayPageContent({ initialData, selectedDateString, todayString }: Props) {
+export default function TodayPageContent({ initialData, selectedDateString, todayString, showWelcome = false }: Props) {
     const router = useRouter();
     const isFuture = selectedDateString > todayString;
 
@@ -72,6 +74,8 @@ export default function TodayPageContent({ initialData, selectedDateString, toda
 
     return (
         <div className="flex-1 flex flex-col items-center justify-center px-6">
+            <WelcomeModal shouldShow={showWelcome} />
+            
             <div className="flex w-full max-w-md flex-col items-center gap-10">
                 <div className="text-center space-y-2">
                     <h1 className="text-2xl font-medium text-gray-700">{dateLabel}</h1>
