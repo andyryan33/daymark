@@ -1,7 +1,7 @@
 'use client';
 
 import NextLink from "next/link"; // Import this at the top
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button, Link } from "@heroui/react";
 import { useRouter } from "next/navigation"; // Use router instead of window.location
 import MoodSelector from "./mood-selector";
@@ -16,12 +16,31 @@ interface Props {
     initialData: any;
     selectedDateString: string;
     todayString: string;
+    isInitialDefault: boolean;
 }
 
-export default function TodayPageContent({ initialData, selectedDateString, todayString }: Props) {
-    const router = useRouter();
+export default function TodayPageContent({ initialData, selectedDateString, todayString, isInitialDefault }: Props) {
+const router = useRouter();
 
-    const isFuture = selectedDateString > todayString;
+    // 1. Calculate the REAL "Today" for Woodbury, MN (or wherever the user is)
+    const realTodayString = useMemo(() => {
+        const now = new Date();
+        // This format ensures YYYY-MM-DD in the local timezone
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }, []);
+
+    // 2. Client-side Check: Did the server give us the wrong "Today"?
+    // If the server gave us Jan 14, but Woodbury says it's Jan 13, we redirect immediately.
+    useEffect(() => {
+        if (isInitialDefault && selectedDateString !== realTodayString) {
+            router.replace(`/home?date=${realTodayString}`);
+        }
+    }, [isInitialDefault, selectedDateString, realTodayString, router]);
+
+    const isFuture = selectedDateString > realTodayString;
 
     // Initialize state directly from props
     const [state, setState] = useState<TodayState>(initialData ? "logged" : "idle");
