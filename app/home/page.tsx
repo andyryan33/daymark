@@ -8,21 +8,20 @@ type TodayPageProps = {
 export default async function TodayPage({ searchParams }: TodayPageProps) {
     const params = await searchParams;
     const dateParam = typeof params.date === 'string' ? params.date : null;
+    
+    const now = new Date();
+    const todayString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    const selectedDate = dateParam || todayString;
 
-    // Fetch the specific date if provided, otherwise fetch the "Server Today" as a fallback
-    // (The client will override this if it's different)
-    const fallbackDate = new Date().toISOString().split('T')[0];
-    const targetDate = dateParam || fallbackDate;
-
-    const entryResult = await getDayEntry(targetDate);
+    const entryResult = await getDayEntry(selectedDate);
     const initialData = entryResult.success ? entryResult.data : null;
 
     return (
         <TodayPageContent 
-            key={targetDate} // Key forces a remount on date change
+            key={selectedDate}
             initialData={initialData} 
-            selectedDateString={targetDate}
-            isInitialDefault={!dateParam} // Tells the client this was a guess
+            selectedDateString={selectedDate}
+            todayString={todayString}
         />
     );
 }
