@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
+import { TimezoneSync } from "@/components/layout/timezone-sync";
 import Providers from "./providers";
 
 const geistSans = Geist({
@@ -30,7 +31,10 @@ export default function RootLayout({
     return (
         <html lang="en" className="bg-[#FAFAFA]">
             <body className={`${geistSans.className} ${geistMono.variable} antialiased`}>
-                <Providers>{children}</Providers>
+                <Providers>
+                    <TimezoneSync />
+                    {children}
+                </Providers>
             </body>
         </html>
     );
