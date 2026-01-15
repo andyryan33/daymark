@@ -82,7 +82,7 @@ export default function AboutModal({ isOpen: extOpen, onOpenChange: extChange, i
 
                                     <div className="pt-4">
                                         <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-300">
-                                            © {currentYear} Woodbury, MN
+                                            © {currentYear} daymark
                                         </p>
                                     </div>
                                     
