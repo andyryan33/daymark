@@ -61,7 +61,7 @@ export default function AboutModal({ isOpen: extOpen, onOpenChange: extChange, i
                                         <div className="flex items-start gap-3 text-left bg-neutral-50 p-3 rounded-xl">
                                             <ShieldCheck size={18} className="text-[#708ea5] shrink-0 mt-0.5" />
                                             <p className="text-[12px] text-neutral-600 leading-snug">
-                                                This app uses a single, functional cookie to remember your local timezone so your entries align with your day. We do not track you or sell your data.
+                                                This app uses a single, functional cookie to remember your local timezone so your entries align with your day. It does not track you or sell your data.
                                             </p>
                                         </div>
                                     </div>
