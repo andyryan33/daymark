@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import { getDayEntry } from "@/lib/db/queries/day-entries";
-import { getProfileStatus } from "@/lib/db/queries/user"; // Import the new query
+import { getProfileStatus } from "@/lib/db/queries/user";
+import TodayPageSkeleton from '@/components/home/today-page-skeleton';
 import TodayPageContent from "@/components/home/today-page-content";
 
 type TodayPageProps = {
@@ -37,12 +39,14 @@ export default async function TodayPage({ searchParams }: TodayPageProps) {
     const showWelcome = !profileStatus.hasSeenWelcome; // Determine if we should show the modal
 
     return (
-        <TodayPageContent 
-            key={selectedDate}
-            initialData={initialData} 
-            selectedDateString={selectedDate}
-            todayString={todayString}
-            showWelcome={showWelcome} // Pass it here
-        />
+        <Suspense fallback={<TodayPageSkeleton />}>
+            <TodayPageContent 
+                key={selectedDate}
+                initialData={initialData} 
+                selectedDateString={selectedDate}
+                todayString={todayString}
+                showWelcome={showWelcome} // Pass it here
+            />
+        </Suspense>
     );
 }

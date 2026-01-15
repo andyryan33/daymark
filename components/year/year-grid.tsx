@@ -64,21 +64,33 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
                 ))}
             </div>
 
-            {/* Enhanced Legend with Counts */}
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 pt-8 border-t border-neutral-200">
-                {MOODS.map(m => {
-                    const count = moodCounts[m.value] || 0;
-                    return (
-                        <div key={m.value} className="flex items-center gap-3">
-                            <div className={`h-3 w-3 rounded-full ${m.color}`} />
-                            <div className="flex flex-col -space-y-1">
-                                <span className="text-xs font-medium text-neutral-700">{m.label}</span>
-                                <span className="text-[10px] text-neutral-400">{count} {count === 1 ? 'day' : 'days'}</span>
+            {/* Option 1: Organic Pills Legend */}
+            <div className="pt-8 border-t border-neutral-200">
+                <div className="flex flex-wrap justify-center gap-3">
+                    {MOODS.map((m) => {
+                        const count = moodCounts[m.value] || 0;
+                        return (
+                            <div 
+                                key={m.value} 
+                                className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-200 bg-neutral-50/50"
+                            >
+                                {/* Slightly larger dot for the pill look */}
+                                <div className={`h-2.5 w-2.5 rounded-full ${m.color}`} />
+                                
+                                <div className="flex items-baseline gap-1.5">
+                                    <span className="text-xs font-medium text-neutral-700">{m.label}</span>
+                                    {/* Separator dot */}
+                                    <span className="text-[10px] text-neutral-300">•</span>
+                                    <span className="text-[10px] text-neutral-500 font-medium">
+                                        {count}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </div>
+
         </motion.div>
     );
 }

@@ -1,9 +1,10 @@
 'use client';
 
-import { motion } from "framer-motion"
-import { Button } from "@heroui/react"
-import clsx from "clsx"
-import { MOODS, MoodValue } from "@/lib/mood"
+import { motion } from "framer-motion";
+import { Button } from "@heroui/react";
+import { CircleX } from "lucide-react";
+import clsx from "clsx";
+import { MOODS, MoodValue } from "@/lib/mood";
 
 type Props = {
     value?: MoodValue
@@ -70,11 +71,12 @@ export default function MoodSelector({ value, onChange, onCancel }: Props) {
                 {onCancel && (
                     <Button 
                         variant="light"
-                        size="sm" 
+                        size="sm"
                         onPress={onCancel}
+                        startContent={<CircleX size={20} />}
                         className="text-neutral-500 mt-6"
                     >
-                        Cancel Edit
+                        Cancel
                     </Button>
                 )}
             </div>

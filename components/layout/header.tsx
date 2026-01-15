@@ -106,7 +106,7 @@ export default function Header() {
                                     key="about" 
                                     onPress={aboutDisclosure.onOpen}
                                 >
-                                    About & Privacy
+                                    About
                                 </DropdownItem>
                                 <DropdownItem 
                                     key="logout" 

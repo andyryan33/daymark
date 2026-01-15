@@ -2,7 +2,8 @@
 
 import NextLink from "next/link"; 
 import { useState, useEffect } from "react";
-import { Button } from "@heroui/react";
+import { Button, addToast } from "@heroui/react";
+import { Check } from "lucide-react";
 import { useRouter } from "next/navigation"; 
 import MoodSelector from "./mood-selector";
 import NotesStep from "./notes-step";
@@ -45,6 +46,12 @@ export default function TodayPageContent({ initialData, selectedDateString, toda
         try {
             await saveDayEntry(mood, selectedDateString, notes);
             setState("logged");
+            addToast({
+                title: "Day marked.",
+                color: "primary",
+                hideIcon: true,
+                endContent: <Check size={18} />
+            });
             router.refresh(); 
         } catch (error) {
             console.error(error);
