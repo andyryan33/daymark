@@ -14,6 +14,7 @@ import {
     DropdownSection,
     useDisclosure
 } from "@heroui/react";
+import { LogOut, Info, User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import NextLink from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -96,8 +97,8 @@ export default function Header() {
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="faded" disabledKeys={["user"]}>
                             <DropdownSection title="Signed in as">
-                                <DropdownItem key="user" textValue={fullName}>
-                                    <p className="font-bold">{fullName}</p>
+                                <DropdownItem key="user" textValue={fullName} startContent={<User size={18} />}>
+                                    {fullName}
                                 </DropdownItem>
                             </DropdownSection>
 
@@ -105,12 +106,14 @@ export default function Header() {
                                 <DropdownItem 
                                     key="about" 
                                     onPress={aboutDisclosure.onOpen}
+                                    startContent={<Info size={18} />}
                                 >
                                     About
                                 </DropdownItem>
                                 <DropdownItem 
                                     key="logout" 
-                                    color="danger" 
+                                    color="danger"
+                                    startContent={<LogOut size={18} />}
                                     onPress={handleLogout}
                                 >
                                     Log Out
