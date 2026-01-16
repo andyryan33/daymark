@@ -26,8 +26,6 @@ export default function Header() {
     const pathname = usePathname();
     const router = useRouter();
     const supabase = createClient();
-    
-    // Create the control for the About Modal
     const aboutDisclosure = useDisclosure();
 
     const handleLogout = async () => {
@@ -124,7 +122,6 @@ export default function Header() {
                 </NavbarContent>
             </Navbar>
 
-            {/* Render the modal here, controlled by the Disclosure above */}
             <AboutModal 
                 isOpen={aboutDisclosure.isOpen} 
                 onOpenChange={aboutDisclosure.onOpenChange} 

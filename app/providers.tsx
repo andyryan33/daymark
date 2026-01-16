@@ -2,15 +2,15 @@
 
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
 
-interface ProvidersProps {
+type ProvidersProps = {
     children: React.ReactNode
 }
 
 export default function Providers({ children }: ProvidersProps) {
     return (
-            <HeroUIProvider>
-                <ToastProvider placement="bottom-right" />
-                {children}
-            </HeroUIProvider>
+        <HeroUIProvider>
+            <ToastProvider placement="bottom-right" />
+            {children}
+        </HeroUIProvider>
     );
 }

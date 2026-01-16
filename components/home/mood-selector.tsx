@@ -6,13 +6,13 @@ import { CircleX } from "lucide-react";
 import clsx from "clsx";
 import { MOODS, MoodValue } from "@/lib/mood";
 
-type Props = {
+type MoodSelectorProps = {
     value?: MoodValue
     onChange: (value: MoodValue) => void
     onCancel?: () => void
 }
 
-export default function MoodSelector({ value, onChange, onCancel }: Props) {
+export default function MoodSelector({ value, onChange, onCancel }: MoodSelectorProps) {
     const handleSelection = (moodValue: MoodValue) => {
         if (typeof navigator !== "undefined" && navigator.vibrate) {
             navigator.vibrate(15);
@@ -52,7 +52,7 @@ export default function MoodSelector({ value, onChange, onCancel }: Props) {
                                 <span className="sr-only">{mood.label}</span>
                             </Button>
                         </motion.div>
-                    )
+                    );
                 })}
             </div>
             

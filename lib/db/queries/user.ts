@@ -1,4 +1,4 @@
-'use server'
+'use server';
 
 import db from "@/lib/db/prisma";
 import { createClient } from "@/lib/supabase/server";
@@ -15,7 +15,6 @@ export async function getProfileStatus() {
             select: { hasSeenWelcome: true }
         });
 
-        // If no profile exists yet, they haven't seen it (default behavior)
         return { hasSeenWelcome: profile?.hasSeenWelcome ?? false };
     } catch (error) {
         return { hasSeenWelcome: false };

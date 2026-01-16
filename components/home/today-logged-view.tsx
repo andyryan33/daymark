@@ -22,7 +22,6 @@ export default function TodayLoggedView({ mood, notes, onEdit }: TodayLoggedView
             className="w-full max-w-md"
         >
             <Card className="relative w-full p-6">
-                {/* Minimal Edit Button in Top Right */}
                 <div className="absolute top-4 right-4">
                     <Button 
                         isIconOnly 

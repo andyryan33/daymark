@@ -9,7 +9,6 @@ import AboutModal from "@/components/landing/about-modal";
 export default function LandingPage() {
     return (
         <div className="min-h-screen bg-[#FAFAFA] flex flex-col overflow-x-hidden">
-            {/* Simple Nav */}
             <nav className="px-6 py-6 md:py-8 flex justify-between items-center max-w-7xl mx-auto w-full">
                 <div className="text-xl md:text-2xl font-bold tracking-tighter text-[#708ea5]">
                     daymark
@@ -33,7 +32,6 @@ export default function LandingPage() {
                 </Button>
             </nav>
 
-            {/* Hero Section */}
             <main className="flex-1 flex flex-col items-center justify-center px-6 text-center pt-10 md:pt-0">
                 <div className="space-y-4 md:space-y-6 max-w-3xl">
                     <h1 className="text-4xl md:text-7xl font-bold tracking-tighter text-neutral-800">
@@ -57,14 +55,12 @@ export default function LandingPage() {
                     </div>
                 </div>
 
-                {/* Preview Grid Component */}
                 <div className="mt-16 md:mt-24 w-full max-w-md px-4 pointer-events-none">
                     <p className="text-[10px] uppercase tracking-widest text-neutral-400 mb-4">Your year in color</p>
                     <PreviewGrid />
                 </div>
             </main>
 
-            {/* Features Row */}
             <section className="bg-white border-t border-neutral-100 py-16 md:py-24 px-6 mt-20">
                 <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
                     <FeatureCard 

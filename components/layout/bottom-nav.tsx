@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import NextLink from "next/link";
-import { Home, Calendar, History } from "lucide-react"; // Install lucide-react if you haven't
+import { Home, Calendar, History } from "lucide-react";
 
 export default function BottomNav() {
     const pathname = usePathname();

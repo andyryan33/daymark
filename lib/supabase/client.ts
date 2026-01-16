@@ -9,8 +9,6 @@ export const createClient = () =>
         supabaseKey!,
 );
 
-
-
 export async function signInWithGoogle() {
     const supabase = createClient();
 

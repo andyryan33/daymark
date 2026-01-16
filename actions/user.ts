@@ -8,10 +8,11 @@ export async function completeWalkthrough() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) return { success: false };
+    if (!user) {
+        return { success: false, message: "Unauthorized" };
+    }
 
     try {
-        // Upsert ensures we create a profile if one doesn't exist yet
         await db.profile.upsert({
             where: { userId: user.id },
             create: {

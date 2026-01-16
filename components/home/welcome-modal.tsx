@@ -6,11 +6,11 @@ import { MOODS } from "@/lib/mood";
 import clsx from "clsx";
 import { completeWalkthrough } from "@/actions/user";
 
-interface Props {
+type WelcomeModalProps = {
     shouldShow: boolean;
 }
 
-export default function WelcomeModal({ shouldShow }: Props) {
+export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function WelcomeModal({ shouldShow }: Props) {
     };
 
     const handleComplete = async () => {
-        onClose(); // Close immediately for better UX
+        onClose();
         await completeWalkthrough();
     };
 

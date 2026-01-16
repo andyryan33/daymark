@@ -5,7 +5,7 @@ import { MoodValue, MOODS } from "@/lib/mood";
 import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 
-type Props = {
+type NotesStepProps = {
     mood: MoodValue
     notes: string
     onChange: (value: string) => void
@@ -21,7 +21,7 @@ export default function NotesStep({
     onSave,
     onSkip,
     onBack
-}: Props) {
+}: NotesStepProps) {
     const moodMeta = MOODS.find((m) => m.value === mood);
 
     return (
@@ -31,7 +31,7 @@ export default function NotesStep({
             transition={{ duration: 0.3 }}
             className="w-full space-y-8"
         >
-            {/* Visual Confirmation of Mood */}
+
             <div className="flex flex-col items-center gap-3">
                 <div className={`h-16 w-16 rounded-full ${moodMeta?.color} ring-4 ring-offset-2 ring-slate-200 shadow-lg shadow-neutral-200`} />
                 <p className="text-center text-sm text-neutral-500">
@@ -39,7 +39,6 @@ export default function NotesStep({
                 </p>
             </div>
 
-            {/* Note Input */}
             <Textarea
                 value={notes}
                 onValueChange={onChange}
@@ -48,7 +47,6 @@ export default function NotesStep({
                 size="lg"
             />
 
-            {/* Action Bar */}
             <div className="flex items-center justify-between pt-2">
                 <Button 
                     variant="light"

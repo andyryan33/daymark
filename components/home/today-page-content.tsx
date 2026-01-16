@@ -14,7 +14,7 @@ import WelcomeModal from "@/components/home/welcome-modal";
 
 type TodayState = "idle" | "notes" | "logged" | "editing";
 
-interface Props {
+type TodayPageContentProps = {
     initialData: any;
     selectedDateString: string;
     todayString: string;
@@ -26,18 +26,16 @@ export default function TodayPageContent({
     selectedDateString, 
     todayString, 
     showWelcome = false 
-}: Props) {
+}: TodayPageContentProps) {
     const router = useRouter();
 
-    // Helper: Compare dates efficiently (YYYY-MM-DD strings work for comparison)
     const isToday = selectedDateString === todayString;
     const isFuture = selectedDateString > todayString;
 
-    // Helper: Calculate previous/next day strings
     const getRelativeDate = (offset: number) => {
-        const d = new Date(`${selectedDateString}T12:00:00`); // Use noon to avoid DST weirdness
+        const d = new Date(`${selectedDateString}T12:00:00`);
         d.setDate(d.getDate() + offset);
-        // Format back to YYYY-MM-DD
+
         const year = d.getFullYear();
         const month = String(d.getMonth() + 1).padStart(2, '0');
         const day = String(d.getDate()).padStart(2, '0');
@@ -47,7 +45,6 @@ export default function TodayPageContent({
     const prevDate = getRelativeDate(-1);
     const nextDate = getRelativeDate(1);
 
-    // State initialization
     const [state, setState] = useState<TodayState>(initialData ? "logged" : "idle");
     const [mood, setMood] = useState<MoodValue | undefined>(initialData?.mood);
     const [notes, setNotes] = useState(initialData?.notes || "");
@@ -58,7 +55,6 @@ export default function TodayPageContent({
         day: "numeric",
     });
     
-    // Sync state when the date changes (e.g. user clicks next/prev)
     useEffect(() => {
          setState(initialData ? "logged" : "idle");
          setMood(initialData?.mood);
@@ -67,6 +63,7 @@ export default function TodayPageContent({
 
     const handleSave = async () => {
         if (!mood) return;
+
         try {
             await saveDayEntry(mood, selectedDateString, notes);
             setState("logged");
@@ -78,7 +75,10 @@ export default function TodayPageContent({
             });
             router.refresh(); 
         } catch (error) {
-            console.error(error);
+            addToast({
+                title: "Error. Please try again.",
+                color: "danger",
+            });
             setState("notes");
         }
     };
@@ -106,10 +106,8 @@ export default function TodayPageContent({
             <WelcomeModal shouldShow={showWelcome} />
             
             <div className="flex w-full max-w-md flex-col items-center gap-10">
-                {/* Header: Date Navigation */}
                 <div className="text-center space-y-2 w-full">
                     <div className="flex items-center justify-between">
-                        {/* Prev Button */}
                         <Button
                             as={NextLink}
                             href={`/home?date=${prevDate}`}
@@ -123,12 +121,10 @@ export default function TodayPageContent({
                             <ChevronLeft size={24} />
                         </Button>
 
-                        {/* Date Label */}
                         <h1 className="text-2xl font-medium text-gray-700 min-w-[200px]">
                             {dateLabel}
                         </h1>
 
-                        {/* Next Button - Disabled if it's today */}
                         <Button
                             as={NextLink}
                             href={isToday ? "#" : `/home?date=${nextDate}`}
@@ -144,13 +140,11 @@ export default function TodayPageContent({
                         </Button>
                     </div>
 
-                    {/* Subtitle */}
                     {!isFuture && state !== "logged" && (
                         <p className="text-neutral-500">How did this day feel?</p>
                     )}
                 </div>
 
-                {/* 1. Mood Selector */}
                 {(state === "idle" || state === "editing") && !isFuture && (
                     <MoodSelector 
                         value={mood} 
@@ -162,7 +156,6 @@ export default function TodayPageContent({
                     />
                 )}
 
-                {/* 2. Notes Step */}
                 {state === "notes" && mood && (
                     <NotesStep
                         mood={mood}
@@ -174,7 +167,6 @@ export default function TodayPageContent({
                     />
                 )}
 
-                {/* 3. Logged View */}
                 {state === "logged" && mood && (
                     <TodayLoggedView
                         mood={mood}
@@ -183,7 +175,6 @@ export default function TodayPageContent({
                     />
                 )}
 
-                {/* Future State (shouldn't be reachable via buttons, but just in case) */}
                 {isFuture && (
                     <div className="text-center space-y-4">
                         <p className="text-sm text-neutral-400">You can’t log future days.</p>

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from "framer-motion";
-import TimelineRow from "./timeline-row"
+import TimelineRow from "./timeline-row";
 import { groupByWeek } from "@/lib/utils";
 
 export default function TimelineList({ entries }: { entries: any[] }) {

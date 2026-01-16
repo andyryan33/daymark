@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import { getDayEntries } from "@/lib/db/queries/day-entries"
+import { getDayEntries } from "@/lib/db/queries/day-entries";
 import TimelineSkeleton from "@/components/timeline/timeline-skeleton";
-import TimelineList from "@/components/timeline/timeline-list"
+import TimelineList from "@/components/timeline/timeline-list";
 
 export default async function TimelinePage() {
     const entries = await getDayEntries();

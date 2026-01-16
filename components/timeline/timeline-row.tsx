@@ -1,11 +1,11 @@
 'use client';
 
-import { useRouter } from "next/navigation"
-import { MOODS } from "@/lib/mood"
+import { useRouter } from "next/navigation";
+import { MOODS } from "@/lib/mood";
 
 export default function TimelineRow({ entry }: { entry: any }) {
-    const router = useRouter()
-    const mood = MOODS.find(m => m.value === entry.mood)
+    const router = useRouter();
+    const mood = MOODS.find(m => m.value === entry.mood);
 
     const displayDate = new Date(entry.date).toLocaleDateString(undefined, {
         weekday: "short",
@@ -25,13 +25,11 @@ export default function TimelineRow({ entry }: { entry: any }) {
             onClick={handleNavigate}
             className="flex items-center gap-4 py-4 text-left hover:bg-neutral-50 transition rounded-lg px-2 cursor-pointer"
         >
-            {/* Mood dot */}
             <span
                 className={`h-3 w-3 rounded-full ${mood?.color}`}
                 aria-hidden
             />
 
-            {/* Date */}
             <div className="flex flex-col">
                 <span className="text-sm font-medium text-neutral-700">
                     {displayDate}

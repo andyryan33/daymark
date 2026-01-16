@@ -1,7 +1,6 @@
 'use client';
 
 export default function PreviewGrid() {
-    // Fake data representing a mix of moods
     const sampleMoods = [
         "bg-[#facc15]", "bg-[#4ade80]", "bg-[#a1a1aa]", "bg-[#4ade80]", 
         "bg-[#facc15]", "bg-[#4ade80]", "bg-[#4ade80]", "bg-[#475569]",

@@ -3,23 +3,21 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure, Divider } from "@heroui/react";
 import { Info, Github, Twitter, Instagram, Mail, ShieldCheck } from "lucide-react";
 
-interface AboutModalProps {
+type AboutModalProps = {
     isOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
-    isExternal?: boolean; // New prop to toggle between button or controlled mode
+    isExternal?: boolean;
 }
 
 export default function AboutModal({ isOpen: extOpen, onOpenChange: extChange, isExternal = false }: AboutModalProps) {
     const internal = useDisclosure();
     const currentYear = new Date().getFullYear();
 
-    // Decide which state to use
     const isOpen = isExternal ? extOpen : internal.isOpen;
     const onOpenChange = isExternal ? extChange : internal.onOpenChange;
 
     return (
         <>
-            {/* Show the Info button ONLY if it's not being controlled by the Header */}
             {!isExternal && (
                 <Button
                     isIconOnly

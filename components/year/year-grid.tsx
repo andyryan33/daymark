@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 export default function YearGrid({ year, entries }: { year: number, entries: any[] }) {
     const months = Array.from({ length: 12 }, (_, i) => i);
 
-    // Calculate totals for each mood
     const moodCounts = useMemo(() => {
         const counts: Record<number, number> = {};
         entries.forEach(entry => {
@@ -17,7 +16,6 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
         return counts;
     }, [entries]);
 
-    // Helper to get color for a specific day
     const getMoodColor = (month: number, day: number) => {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const entry = entries.find(e => {
@@ -35,16 +33,12 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="w-full space-y-8"
         >
-            
-            {/* 12-Month Responsive Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {months.map(month => (
                     <div key={month} className="flex flex-col gap-2">
                         <span className="text-xs font-medium text-neutral-400 uppercase tracking-tighter">
                             {new Date(year, month).toLocaleString('default', { month: 'short' })}
                         </span>
-                        
-                        {/* The Month Grid (7 columns for days of week) */}
                         <div className="grid grid-cols-7 gap-1">
                             {Array.from({ length: new Date(year, month + 1, 0).getDate() }, (_, i) => i + 1).map(day => (
                                 <Tooltip 
@@ -64,7 +58,6 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
                 ))}
             </div>
 
-            {/* Option 1: Organic Pills Legend */}
             <div className="pt-8 border-t border-neutral-200">
                 <div className="flex flex-wrap justify-center gap-3">
                     {MOODS.map((m) => {
@@ -74,12 +67,10 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
                                 key={m.value} 
                                 className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-200 bg-neutral-50/50"
                             >
-                                {/* Slightly larger dot for the pill look */}
                                 <div className={`h-2.5 w-2.5 rounded-full ${m.color}`} />
                                 
                                 <div className="flex items-baseline gap-1.5">
                                     <span className="text-xs font-medium text-neutral-700">{m.label}</span>
-                                    {/* Separator dot */}
                                     <span className="text-[10px] text-neutral-300">•</span>
                                     <span className="text-[10px] text-neutral-500 font-medium">
                                         {count}
@@ -90,7 +81,6 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
                     })}
                 </div>
             </div>
-
         </motion.div>
     );
 }
