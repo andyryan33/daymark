@@ -16,9 +16,12 @@ export default async function TimelinePage() {
                 </div>
             ) : (
                 <div className="flex-1 flex items-center justify-center px-6 text-center">
-                    <p className="text-neutral-500 leading-relaxed mb-8">
-                        Record how you're feeling today to start visualizing your journey.
-                    </p>
+                    <div className="space-y-2 max-w-xs">
+                        <h3 className="text-lg font-medium text-neutral-900">No entries yet</h3>
+                        <p className="text-sm text-neutral-500 leading-relaxed">
+                            Start recording your daily moods to build your personal timeline.
+                        </p>
+                    </div>
                 </div>
             )}
         </>

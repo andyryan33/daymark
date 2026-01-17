@@ -67,7 +67,7 @@ export default function NotesStep({
                     </Button>
                     <Button 
                         color="primary"
-                        variant="light"
+                        variant="flat"
                         onPress={onSave}
                     >
                         Save

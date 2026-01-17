@@ -49,6 +49,8 @@ export default function TodayPageContent({
     const [mood, setMood] = useState<MoodValue | undefined>(initialData?.mood);
     const [notes, setNotes] = useState(initialData?.notes || "");
 
+    const showNavigation = state === "idle" || state === "logged";
+
     const dateLabel = new Date(`${selectedDateString}T12:00:00`).toLocaleDateString(undefined, {
         weekday: "long",
         month: "long",
@@ -115,7 +117,7 @@ export default function TodayPageContent({
                             isIconOnly
                             variant="light"
                             radius="full"
-                            className="text-neutral-400 hover:text-neutral-700"
+                            className={`text-neutral-400 hover:text-neutral-700 ${!showNavigation || isFuture ? "invisible pointer-events-none" : ""}`}
                             aria-label="Previous Day"
                         >
                             <ChevronLeft size={24} />
@@ -133,10 +135,10 @@ export default function TodayPageContent({
                             isIconOnly
                             variant="light"
                             radius="full"
-                            className="text-neutral-400 hover:text-neutral-700 disabled:opacity-30"
+                            className={`text-neutral-400 hover:text-neutral-700 ${!showNavigation || isToday || isFuture ? "invisible pointer-events-none" : ""}`}
                             aria-label="Next Day"
                         >
-                            {!isToday ? <ChevronRight size={24} /> : <span className="w-6 h-6" /> }
+                            <ChevronRight size={24} />
                         </Button>
                     </div>
 

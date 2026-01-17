@@ -44,15 +44,15 @@ export default function TodayLoggedView({ mood, notes, onEdit }: TodayLoggedView
                         <p className="text-xs pt-2 uppercase tracking-wider text-neutral-500">
                             Today you felt
                         </p>
-                        <p className="font-medium">
+                        <p className="text-xl md:text-2xl font-semibold text-neutral-800">
                             {moodMeta?.label}
                         </p>
                     </div>
 
                     {notes && (
-                        <div className="relative">
-                            <p className="text-sm text-neutral-600 whitespace-pre-wrap leading-relaxed italic">
-                                {notes}
+                        <div className="w-full pt-4 border-t border-neutral-200/50 mt-2">
+                            <p className="text-neutral-600 leading-relaxed whitespace-pre-wrap font-serif text-md italic opacity-80">
+                                "{notes}"
                             </p>
                         </div>
                     )}

@@ -5,9 +5,9 @@ export const MOODS: {
     label: string
     color: string
 }[] = [
-    { value: 1, label: "Heavy",  color: "bg-[#1f2937]" },
+    { value: 1, label: "Heavy",  color: "bg-[#0f172a]" },
     { value: 2, label: "Low",    color: "bg-[#475569]" },
-    { value: 3, label: "Okay",   color: "bg-[#a1a1aa]" },
+    { value: 3, label: "Okay",   color: "bg-[#94a3b8]" },
     { value: 4, label: "Good",   color: "bg-[#0BEA8D]" },
     { value: 5, label: "Bright", color: "bg-[#facc15]" },
 ]
