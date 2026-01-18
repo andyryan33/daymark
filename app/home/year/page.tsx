@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import { getYearlyEntries } from "@/lib/db/queries/day-entries";
 import YearGridSkeleton from "@/components/year/year-grid-skeleton";
-import YearView from "@/components/year/year-view"; // Import the wrapper
+import YearView from "@/components/year/year-view";
 
-type Props = {
+type YearPageProps = {
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default async function YearPage({ searchParams }: Props) {
+export default async function YearPage({ searchParams }: YearPageProps) {
     const params = await searchParams;
     
     const currentYear = new Date().getFullYear();

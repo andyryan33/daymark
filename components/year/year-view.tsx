@@ -4,13 +4,12 @@ import { useState } from "react";
 import YearSelector from "./year-selector";
 import YearGrid from "./year-grid";
 
-interface Props {
+interface YearViewProps {
     year: number;
     entries: any[];
 }
 
-export default function YearView({ year, entries }: Props) {
-    // Default to false (Single Column/Standard view) for better tap targets on mobile
+export default function YearView({ year, entries }: YearViewProps) {
     const [isCompact, setIsCompact] = useState(false);
 
     return (
