@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 
 export default function PreviewGrid() {
     const sampleMoods = [
-        "bg-[#facc15]", "bg-[#4ade80]", "bg-[#e5e5e5]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#4ade80]",
-        "bg-[#94a3b8]", "bg-[#e5e5e5]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#1f2937]", "bg-[#4ade80]", "bg-[#4ade80]",
-        "bg-[#facc15]", "bg-[#e5e5e5]", "bg-[#4ade80]", "bg-[#4ade80]", "bg-[#94a3b8]", "bg-[#facc15]", "bg-[#1f2937]",
-        "bg-[#4ade80]", "bg-[#e5e5e5]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#4ade80]", "bg-[#4ade80]"
+        "bg-[#facc15]", "bg-[#4ade80]", "bg-[#94a3b8]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#4ade80]",
+        "bg-[#475569]", "bg-[#94a3b8]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#0f172a]", "bg-[#4ade80]", "bg-[#4ade80]",
+        "bg-[#facc15]", "bg-[#475569]", "bg-[#4ade80]", "bg-[#4ade80]", "bg-[#475569]", "bg-[#facc15]", "bg-[#0f172a]",
+        "bg-[#4ade80]", "bg-[#94a3b8]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#4ade80]", "bg-[#4ade80]"
     ];
 
     const container = {

@@ -3,15 +3,13 @@
 import { Button } from "@heroui/react";
 import { signInWithGoogle } from "@/lib/supabase/client";
 import { LogIn, Heart, Calendar, LineChart } from "lucide-react";
-import AboutModal from "@/components/landing/about-modal"; // Ensure path is correct
+import AboutModal from "@/components/landing/about-modal";
 import PreviewGrid from "@/components/landing/preview-grid";
-import { motion } from "framer-motion";
 
 export default function LandingPage() {
     return (
         <div className="min-h-screen bg-[#FAFAFA] flex flex-col overflow-x-hidden relative selection:bg-[#708ea5]/20">
             
-            {/* Subtle Background Pattern */}
             <div className="absolute inset-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
 
             <nav className="relative z-10 px-6 py-6 md:py-8 flex justify-between items-center max-w-7xl mx-auto w-full">
@@ -29,8 +27,7 @@ export default function LandingPage() {
 
             <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center pt-16 md:pt-24 pb-16">
                 <div className="space-y-8 max-w-4xl flex flex-col items-center">
-                    
-                    {/* Badge */}
+
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#708ea5]/10 text-[#708ea5] text-xs font-semibold uppercase tracking-wider">
                         <span className="relative flex h-2 w-2">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#708ea5] opacity-75"></span>
@@ -55,7 +52,7 @@ export default function LandingPage() {
                             className="bg-[#2c2c2c] text-white font-medium"
                             startContent={<LogIn size={20} />}
                         >
-                            On your mark
+                            Get on your mark
                         </Button>
                     </div>
                 </div>
@@ -65,7 +62,7 @@ export default function LandingPage() {
                 </div>
             </main>
 
-            <section className="relative z-10 bg-white border-y border-neutral-200 py-16 md:py-24 px-6 mt-20">
+            <section className="relative z-10 bg-white border-y border-neutral-200 py-16 md:py-24 px-6 mt-10">
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                     <FeatureCard 
                         icon={<Heart size={24} />} 
