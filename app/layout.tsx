@@ -16,10 +16,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "daymark",
-    description: "how did this day feel?",
+    description: "A mindful space to record your daily emotions and visualize your year in color.",
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",
+        title: "daymark",
     },
 };
 

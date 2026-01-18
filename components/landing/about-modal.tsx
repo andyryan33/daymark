@@ -47,8 +47,8 @@ export default function AboutModal({ isOpen: extOpen, onOpenChange: extChange, i
                                 <span className="text-2xl font-bold tracking-tighter text-[#708ea5]">daymark</span>
                             </ModalHeader>
 
-                            <ModalBody className="pb-10">
-                                <div className="flex flex-col items-center text-center gap-6">
+                            <ModalBody className="pb-6">
+                                <div className="flex flex-col items-center text-center gap-4 md:gap-6">
                                     <p className="text-sm text-neutral-500 max-w-[85%] leading-relaxed">
                                         A minimal space to record how you feel. Designed to help you notice the light in your journey, one day at a time.
                                     </p>
@@ -85,7 +85,7 @@ export default function AboutModal({ isOpen: extOpen, onOpenChange: extChange, i
                                         </p>
                                     </div>
                                     
-                                    <Button size="sm" variant="light" color="primary" onPress={onClose} className="mt-2 text-neutral-500">
+                                    <Button size="sm" variant="light" color="primary" onPress={onClose} className="text-neutral-500">
                                         Close
                                     </Button>
                                 </div>

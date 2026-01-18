@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { MOODS } from "@/lib/mood";
 import { Tooltip } from "@heroui/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import NextLink from "next/link";
 
 const cn = (...classes: (string | undefined | null | false)[]) => classes.filter(Boolean).join(' ');
@@ -139,7 +139,6 @@ export default function YearGrid({ year, entries, isCompact }: { year: number, e
                 })}
             </motion.div>
 
-            {/* Legend */}
             <div className="pt-8 border-t border-neutral-200">
                 <div className="flex flex-wrap justify-center gap-3">
                     {MOODS.map((m) => {

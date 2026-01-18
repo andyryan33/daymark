@@ -66,7 +66,7 @@ export default function LandingPage() {
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                     <FeatureCard 
                         icon={<Heart size={24} />} 
-                        title="Mindful Logging" 
+                        title="Reflective Logging" 
                         desc="Fast, friction-less entry for your daily mood and thoughts." 
                     />
                     <FeatureCard 
