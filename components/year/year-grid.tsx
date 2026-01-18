@@ -3,16 +3,13 @@
 import { useMemo } from "react";
 import { MOODS } from "@/lib/mood";
 import { Tooltip } from "@heroui/react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import NextLink from "next/link";
-import { clsx } from "clsx"; // Assuming you have clsx or use template literals
 
-// Helper for class names if you don't have clsx/tailwind-merge
 const cn = (...classes: (string | undefined | null | false)[]) => classes.filter(Boolean).join(' ');
-
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-export default function YearGrid({ year, entries }: { year: number, entries: any[] }) {
+export default function YearGrid({ year, entries, isCompact }: { year: number, entries: any[], isCompact: boolean }) {
     const months = Array.from({ length: 12 }, (_, i) => i);
     const today = new Date();
     
@@ -35,27 +32,20 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
             return entryDate === dateStr;
         });
 
-        // Base shape and transition
+        // Base shape
         const base = "aspect-square w-full rounded-md transition-all duration-300 border box-border block";
 
-        // 1. Future Days: Hollow/Ghostly
-        if (isFuture) {
-            return cn(base, "bg-neutral-100 border-neutral-100 cursor-default");
-        }
-
-        // 2. Data Entry Exists: Colored
+        if (isFuture) return cn(base, "bg-neutral-100 border-neutral-100 cursor-default");
+        
         if (entry) {
             const moodColor = MOODS.find(m => m.value === entry.mood)?.color;
-            // Use border-transparent to maintain sizing consistency with empty states
             return cn(base, moodColor, "border-transparent hover:ring-2 hover:ring-offset-2 hover:ring-neutral-200 hover:scale-110 hover:z-10");
         }
 
-        // 3. Today (but empty): Highlighted
         if (isToday) {
             return cn(base, "bg-neutral-50 border-neutral-300 ring-1 ring-neutral-300 ring-offset-1 hover:bg-neutral-100");
         }
 
-        // 4. Past (Empty): Solid Neutral
         return cn(base, "bg-neutral-100 border-transparent hover:bg-neutral-200");
     };
 
@@ -66,41 +56,49 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="w-full space-y-10"
         >
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
+            {/* 
+               layout prop enables smooth reordering when grid columns change 
+            */}
+            <motion.div 
+                layout
+                className={`
+                    grid gap-x-6 gap-y-10 transition-colors duration-300
+                    ${isCompact ? "grid-cols-2" : "grid-cols-1"} 
+                    md:grid-cols-3 lg:grid-cols-4
+                `}
+            >
                 {months.map(month => {
                     const firstDayOfWeek = new Date(year, month, 1).getDay();
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
                     const monthLabel = new Date(year, month).toLocaleString('default', { month: 'long' });
 
                     return (
-                        <div key={month} className="flex flex-col gap-3 group">
-                            {/* Month Header */}
+                        <motion.div 
+                            layout
+                            key={month} 
+                            className="flex flex-col gap-3 group"
+                        >
                             <div className="flex items-baseline justify-between px-0.5">
                                 <span className="text-sm font-semibold text-gray-700 tracking-tight">
                                     {monthLabel}
                                 </span>
                             </div>
 
-                            {/* Calendar Grid */}
                             <div className="grid grid-cols-7 gap-1.5">
-                                {/* Weekday Headers - Crucial for UX alignment */}
                                 {WEEKDAYS.map((day, i) => (
                                     <div key={day + i} className="text-[9px] font-medium text-neutral-400 text-center py-1">
                                         {day}
                                     </div>
                                 ))}
 
-                                {/* Ghost Days (Invisible spacers) */}
                                 {Array.from({ length: firstDayOfWeek }).map((_, i) => (
                                     <div key={`empty-${month}-${i}`} className="aspect-square w-full pointer-events-none" />
                                 ))}
 
-                                {/* Actual Days */}
                                 {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(day => {
                                     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                                     const dateObj = new Date(year, month, day);
                                     
-                                    // Use setHours to compare dates purely, ignoring time
                                     const now = new Date();
                                     now.setHours(0,0,0,0);
                                     const compareDate = new Date(year, month, day);
@@ -124,7 +122,6 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
                                             classNames={{
                                                 content: "bg-white shadow-lg border border-neutral-100 rounded-lg"
                                             }}
-                                            // FIX: Explicitly define animation to prevent scale(NaN) error
                                             motionProps={{
                                                 variants: {
                                                     exit: { opacity: 0, scale: 0.9, transition: { duration: 0.1, ease: "easeIn" } },
@@ -143,10 +140,10 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
                                     );
                                 })}
                             </div>
-                        </div>
+                        </motion.div>
                     );
                 })}
-            </div>
+            </motion.div>
 
             {/* Legend */}
             <div className="pt-8 border-t border-neutral-200">
@@ -159,13 +156,10 @@ export default function YearGrid({ year, entries }: { year: number, entries: any
                                 className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-200 bg-neutral-50/50"
                             >
                                 <div className={`h-2.5 w-2.5 rounded-full ${m.color}`} />
-                                
                                 <div className="flex items-baseline gap-1.5">
                                     <span className="text-xs font-medium text-neutral-700">{m.label}</span>
                                     <span className="text-[10px] text-neutral-300">•</span>
-                                    <span className="text-[10px] text-neutral-500 font-medium">
-                                        {count}
-                                    </span>
+                                    <span className="text-[10px] text-neutral-500 font-medium">{count}</span>
                                 </div>
                             </div>
                         );

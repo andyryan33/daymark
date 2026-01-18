@@ -1,26 +1,36 @@
 'use client';
 
-import { Button } from "@heroui/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button, Switch } from "@heroui/react";
+import { ChevronLeft, ChevronRight, Grid2X2, Rows3 } from "lucide-react";
 import NextLink from "next/link";
 
 type YearSelectorProps = {
     year: number;
-}
+    isCompact: boolean;
+    setIsCompact: (v: boolean) => void;
+};
 
-export default function YearSelector({ year }: YearSelectorProps) {
+export default function YearSelector({
+    year,
+    isCompact,
+    setIsCompact,
+}: YearSelectorProps) {
     const currentYear = new Date().getFullYear();
     const prevYear = year - 1;
     const nextYear = year + 1;
     const isFuture = nextYear > currentYear;
 
     return (
-        <div className="flex items-center justify-center mb-8">
-            <div className="flex items-center justify-between w-full max-w-[200px]">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center min-h-[40px]">
+            {/* Left spacer */}
+            <div />
+
+            {/* Centered Date Controls */}
+            <div className="flex items-center gap-4">
                 <Button
                     as={NextLink}
                     href={`/home/year?year=${prevYear}`}
-                    prefetch={true}
+                    prefetch
                     isIconOnly
                     variant="light"
                     radius="full"
@@ -42,11 +52,30 @@ export default function YearSelector({ year }: YearSelectorProps) {
                     isIconOnly
                     variant="light"
                     radius="full"
-                    className={`text-neutral-400 hover:text-neutral-700 disabled:opacity-30 ${isFuture ? "invisible pointer-events-none" : ""}`}
+                    className={`text-neutral-400 hover:text-neutral-700 ${
+                        isFuture ? "invisible pointer-events-none" : ""
+                    }`}
                     aria-label="Next Year"
                 >
                     <ChevronRight size={24} />
                 </Button>
+            </div>
+
+            {/* Right-aligned Toggle (Mobile Only) */}
+            <div className="flex justify-end md:hidden">
+                <Switch
+                    color="primary"
+                    thumbIcon={({ isSelected, className }) => 
+                        isSelected ? (
+                            <Grid2X2 className={className} size={14} />
+                        ) : (
+                            <Rows3 className={className} size={14} />
+                        )
+                    }
+                    isSelected={isCompact}
+                    onValueChange={setIsCompact}
+                    aria-label="Toggle View"
+                />
             </div>
         </div>
     );

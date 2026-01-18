@@ -42,7 +42,8 @@ export default function AboutModal({ isOpen: extOpen, onOpenChange: extChange, i
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-center pt-10">
+                            <ModalHeader className="flex flex-col items-center text-center p-8 pb-6 bg-gradient-to-b from-neutral-50/50 to-transparent">
+                                <div className="h-16 w-16 bg-primary-400 ring-4 ring-offset-2 ring-slate-200 shadow-lg shadow-neutral-200 mb-6 rounded-full" />
                                 <span className="text-2xl font-bold tracking-tighter text-[#708ea5]">daymark</span>
                             </ModalHeader>
 

@@ -1,10 +1,12 @@
 'use client';
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@heroui/react";
-import { useEffect } from "react";
+import { Modal, ModalContent, Button, useDisclosure } from "@heroui/react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { MOODS } from "@/lib/mood";
-import clsx from "clsx";
 import { completeWalkthrough } from "@/actions/user";
+import { ChevronRight, Check } from "lucide-react";
+import clsx from "clsx";
 
 type WelcomeModalProps = {
     shouldShow: boolean;
@@ -12,21 +14,88 @@ type WelcomeModalProps = {
 
 export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+    const [step, setStep] = useState(0);
+
+    // Interactive demo state for Step 2
+    const [demoMood, setDemoMood] = useState(MOODS[2].value); // Default to 'Okay'
 
     useEffect(() => {
-        if (shouldShow) {
-            onOpen();
-        }
+        if (shouldShow) onOpen();
     }, [shouldShow, onOpen]);
-
-    const handleDismiss = () => {
-        onClose();
-    };
 
     const handleComplete = async () => {
         onClose();
-        await completeWalkthrough();
+        // Wait for close animation to finish before server action to avoid jank
+        setTimeout(() => completeWalkthrough(), 300);
     };
+
+    const nextStep = () => setStep((s) => s + 1);
+
+    const steps = [
+        {
+            title: (<div>Welcome to <span className="text-primary font-bold tracking-tighter">daymark</span></div>),
+            subtitle: "A quiet space to record your journey, one day at a time.",
+            content: (
+                <div className="flex justify-center py-8">
+                    <div className="h-24 w-24 bg-[#708EA5] rounded-full flex items-center justify-center shadow-xl shadow-blue-900/10 ring-4 ring-slate-200 ring-offset-3" />
+                </div>
+            )
+        },
+        {
+            title: "Track your light",
+            subtitle: "Every day has a color. Select the orb that fits how you feel.",
+            content: (
+                <div className="py-6 flex flex-col items-center gap-6">
+                    {/* Interactive Demo Card */}
+                    <div className="w-full bg-neutral-50 border border-neutral-100 p-4 rounded-xl flex items-center gap-4 transition-colors duration-300">
+                        <div className={clsx(
+                            "h-12 w-12 rounded-full transition-all duration-300 ring-4 ring-offset-2 ring-slate-200 shadow-sm",
+                            MOODS.find(m => m.value === demoMood)?.color
+                        )} />
+                        <div className="flex flex-col">
+                            <span className="text-xs font-bold uppercase text-neutral-400 tracking-wider">Preview</span>
+                            <span className="font-medium text-neutral-800">
+                                {MOODS.find(m => m.value === demoMood)?.label}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Mini Selector */}
+                    <div className="flex gap-2">
+                        {MOODS.map(m => (
+                            <button
+                                key={m.value}
+                                onClick={() => setDemoMood(m.value)}
+                                className={clsx(
+                                    "h-6 w-6 rounded-full transition-transform hover:scale-110",
+                                    m.color,
+                                    demoMood === m.value ? "ring-2 ring-offset-1 ring-slate-200 scale-110" : "opacity-50"
+                                )}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )
+        },
+        {
+            title: "Your timeline awaits",
+            subtitle: "Over time, you will see patterns, memories, and growth.",
+            content: (
+                <div className="py-8 grid grid-cols-7 gap-2 opacity-60">
+                     {/* Abstract decorative grid */}
+                     {Array.from({ length: 14 }).map((_, i) => (
+                        <div 
+                            key={i} 
+                            className={clsx(
+                                "aspect-square rounded-lg", 
+                                i % 3 === 0 ? "bg-[#facc15]" : i % 2 === 0 ? "bg-[#0BEA8D]" : "bg-[#94a3b8]"
+                            )} 
+                        />
+                     ))}
+                </div>
+            )
+        }
+    ];
 
     return (
         <Modal 
@@ -36,53 +105,91 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
             placement="center"
             hideCloseButton
             isDismissable={false}
-            className="mx-6 max-w-sm"
+            classNames={{
+                base: "bg-white",
+                backdrop: "bg-neutral-900/20 backdrop-blur-sm"
+            }}
         >
-            <ModalContent>
-                <ModalHeader className="flex flex-col gap-1 text-center pt-8">
-                    <span className="text-xl font-medium text-gray-800">Welcome to <span className="text-primary font-bold tracking-tighter">daymark</span></span>
-                </ModalHeader>
+            <ModalContent className="p-0 overflow-hidden max-w-[360px]">
+                <div className="p-6 h-[420px] flex flex-col relative">
+                    {/* Progress Dots */}
+                    <div className="flex justify-center gap-1.5 mb-8">
+                        {steps.map((_, i) => (
+                            <motion.div 
+                                key={i}
+                                className="h-1.5 rounded-full bg-neutral-200"
+                                animate={{ 
+                                    width: step === i ? 24 : 6,
+                                    backgroundColor: step === i ? "#708ea5" : "#e5e5e5"
+                                }}
+                            />
+                        ))}
+                    </div>
 
-                <ModalBody className="pb-6">
-                    <div className="flex flex-col items-center text-center gap-6">
-                        <p className="text-sm text-neutral-500 leading-relaxed">
-                            Tracking your days should be simple. <br/>
-                            Select the color that matches your vibe.
-                        </p>
-
-                        <div className="grid gap-3 w-full px-4">
-                            {MOODS.map((mood) => (
-                                <div key={mood.value} className="flex items-center gap-4 p-2 rounded-xl hover:bg-neutral-50 transition-colors">
-                                    <div className={clsx("w-8 h-8 rounded-full shadow-sm", mood.color)} />
-                                    <div className="flex flex-col items-start">
-                                        <span className="text-sm font-medium text-gray-700">{mood.label}</span>
-                                    </div>
+                    <div className="flex-1 relative">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={step}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.2 }}
+                                className="flex flex-col items-center text-center h-full"
+                            >
+                                <h2 className="text-xl font-bold text-neutral-800 mb-2">
+                                    {steps[step].title}
+                                </h2>
+                                <p className="text-sm text-neutral-500 leading-relaxed max-w-[260px]">
+                                    {steps[step].subtitle}
+                                </p>
+                                
+                                <div className="flex-1 w-full flex flex-col justify-center">
+                                    {steps[step].content}
                                 </div>
-                            ))}
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                    <div className="mt-auto pt-4">
+                        <div className="flex flex-col gap-2">
+                        {step < steps.length - 1 ? (
+                            <Button 
+                                fullWidth 
+                                className="bg-neutral-900 text-white"
+                                onPress={nextStep}
+                                endContent={<ChevronRight size={18} />}
+                            >
+                                Continue
+                            </Button>
+                        ) : (
+                            <>
+                                                            <Button 
+                                    fullWidth
+                                    variant="solid"
+                                    color="primary"
+                                    onPress={handleComplete}
+                                    startContent={<Check size={18} />}
+                                >
+                                    Get Started
+                                </Button>
+
+                                <Button 
+                                    fullWidth 
+                                    variant="light" 
+                                    color="default" 
+                                    onPress={() => onClose()}
+                                    className="text-neutral-400"
+                                >
+                                    Remind me later
+                                </Button>
+                            </>
+
+                            
+
+                        )}
                         </div>
                     </div>
-                </ModalBody>
-
-                <ModalFooter className="flex-col gap-2 pb-6 pt-0">
-                    <Button 
-                        fullWidth 
-                        color="primary"
-                        variant="light"
-                        onPress={handleComplete}
-                        className="font-medium"
-                    >
-                        Got it
-                    </Button>
-                    <Button 
-                        fullWidth 
-                        variant="light" 
-                        color="default" 
-                        onPress={handleDismiss}
-                        className="text-neutral-400"
-                    >
-                        Remind me later
-                    </Button>
-                </ModalFooter>
+                </div>
             </ModalContent>
         </Modal>
     );
