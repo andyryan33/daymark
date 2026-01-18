@@ -12,8 +12,6 @@ const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 export default function YearGrid({ year, entries, isCompact }: { year: number, entries: any[], isCompact: boolean }) {
     const months = Array.from({ length: 12 }, (_, i) => i);
     const today = new Date();
-    
-    // Normalize today to compare strings easily
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
     const moodCounts = useMemo(() => {
@@ -32,7 +30,6 @@ export default function YearGrid({ year, entries, isCompact }: { year: number, e
             return entryDate === dateStr;
         });
 
-        // Base shape
         const base = "aspect-square w-full rounded-md transition-all duration-300 border box-border block";
 
         if (isFuture) return cn(base, "bg-neutral-100 border-neutral-100 cursor-default");
@@ -56,9 +53,6 @@ export default function YearGrid({ year, entries, isCompact }: { year: number, e
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="w-full space-y-10"
         >
-            {/* 
-               layout prop enables smooth reordering when grid columns change 
-            */}
             <motion.div 
                 layout
                 className={`

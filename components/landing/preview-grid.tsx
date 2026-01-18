@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 
 export default function PreviewGrid() {
-    // 4 rows of 7 days (28 days)
     const sampleMoods = [
         "bg-[#facc15]", "bg-[#4ade80]", "bg-[#e5e5e5]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#4ade80]",
         "bg-[#94a3b8]", "bg-[#e5e5e5]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#1f2937]", "bg-[#4ade80]", "bg-[#4ade80]",

@@ -25,7 +25,6 @@ export default function YearSelector({
             {/* Left spacer */}
             <div />
 
-            {/* Centered Date Controls */}
             <div className="flex items-center gap-4">
                 <Button
                     as={NextLink}
@@ -61,7 +60,6 @@ export default function YearSelector({
                 </Button>
             </div>
 
-            {/* Right-aligned Toggle (Mobile Only) */}
             <div className="flex justify-end md:hidden">
                 <Switch
                     color="primary"

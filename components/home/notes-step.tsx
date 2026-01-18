@@ -11,7 +11,7 @@ type NotesStepProps = {
     onChange: (value: string) => void
     onSave: () => void
     onSkip: () => void
-    onBack: () => void // New prop
+    onBack: () => void
 }
 
 export default function NotesStep({

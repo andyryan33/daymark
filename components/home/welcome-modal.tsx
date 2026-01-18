@@ -16,8 +16,7 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const [step, setStep] = useState(0);
 
-    // Interactive demo state for Step 2
-    const [demoMood, setDemoMood] = useState(MOODS[2].value); // Default to 'Okay'
+    const [demoMood, setDemoMood] = useState(MOODS[2].value);
 
     useEffect(() => {
         if (shouldShow) onOpen();
@@ -25,7 +24,7 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
 
     const handleComplete = async () => {
         onClose();
-        // Wait for close animation to finish before server action to avoid jank
+
         setTimeout(() => completeWalkthrough(), 300);
     };
 
@@ -46,7 +45,6 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
             subtitle: "Every day has a color. Select the orb that fits how you feel.",
             content: (
                 <div className="py-6 flex flex-col items-center gap-6">
-                    {/* Interactive Demo Card */}
                     <div className="w-full bg-neutral-50 border border-neutral-100 p-4 rounded-xl flex items-center gap-4 transition-colors duration-300">
                         <div className={clsx(
                             "h-12 w-12 rounded-full transition-all duration-300 ring-4 ring-offset-2 ring-slate-200 shadow-sm",
@@ -60,8 +58,7 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
                         </div>
                     </div>
 
-                    {/* Mini Selector */}
-                    <div className="flex gap-2">
+                    <div className="flex gap-4">
                         {MOODS.map(m => (
                             <button
                                 key={m.value}
@@ -82,7 +79,6 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
             subtitle: "Over time, you will see patterns, memories, and growth.",
             content: (
                 <div className="py-8 grid grid-cols-7 gap-2 opacity-60">
-                     {/* Abstract decorative grid */}
                      {Array.from({ length: 14 }).map((_, i) => (
                         <div 
                             key={i} 
@@ -112,7 +108,6 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
         >
             <ModalContent className="p-0 overflow-hidden max-w-[360px]">
                 <div className="p-6 h-[420px] flex flex-col relative">
-                    {/* Progress Dots */}
                     <div className="flex justify-center gap-1.5 mb-8">
                         {steps.map((_, i) => (
                             <motion.div 
@@ -152,41 +147,37 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
 
                     <div className="mt-auto pt-4">
                         <div className="flex flex-col gap-2">
-                        {step < steps.length - 1 ? (
-                            <Button 
-                                fullWidth 
-                                className="bg-neutral-900 text-white"
-                                onPress={nextStep}
-                                endContent={<ChevronRight size={18} />}
-                            >
-                                Continue
-                            </Button>
-                        ) : (
-                            <>
-                                                            <Button 
-                                    fullWidth
-                                    variant="solid"
-                                    color="primary"
-                                    onPress={handleComplete}
-                                    startContent={<Check size={18} />}
-                                >
-                                    Get Started
-                                </Button>
-
+                            {step < steps.length - 1 ? (
                                 <Button 
                                     fullWidth 
-                                    variant="light" 
-                                    color="default" 
-                                    onPress={() => onClose()}
-                                    className="text-neutral-400"
+                                    className="bg-neutral-900 text-white"
+                                    onPress={nextStep}
+                                    endContent={<ChevronRight size={18} />}
                                 >
-                                    Remind me later
+                                    Continue
                                 </Button>
-                            </>
-
-                            
-
-                        )}
+                            ) : (
+                                <>
+                                    <Button 
+                                        fullWidth
+                                        variant="solid"
+                                        color="primary"
+                                        onPress={handleComplete}
+                                        startContent={<Check size={18} />}
+                                    >
+                                        Get Started
+                                    </Button>
+                                    <Button 
+                                        fullWidth 
+                                        variant="light" 
+                                        color="default" 
+                                        onPress={() => onClose()}
+                                        className="text-neutral-400"
+                                    >
+                                        Remind me later
+                                    </Button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
