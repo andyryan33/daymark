@@ -87,8 +87,10 @@ export default function TodayPageContent(props: TodayPageContentProps) {
             <div className="flex w-full max-w-md flex-col items-center gap-10">
                 <TodayHeader 
                     label={dateLabel}
+                    selectedDateString={props.selectedDateString}
                     onPrev={() => actions.navigate(prevDate)}
                     onNext={() => actions.navigate(nextDate)}
+                    onSelectDate={(dateString) => actions.navigate(dateString)}
                     showNav={showNavigation}
                     isFuture={isFuture}
                     isToday={isToday}

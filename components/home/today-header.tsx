@@ -1,39 +1,102 @@
 'use client';
 
-import { Button } from "@heroui/react";
+import { Button, Popover, PopoverTrigger, PopoverContent, Calendar } from "@heroui/react";
+import { CalendarDate } from "@internationalized/date";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
-export default function TodayHeader({label, 
-    onPrev, 
-    onNext, 
-    showNav, 
-    isFuture, 
-    isToday, 
+type TodayHeaderProps = {
+    label: string;
+    selectedDateString: string;
+    onPrev: () => void;
+    onNext: () => void;
+    onSelectDate: (dateString: string) => void;
+    showNav: boolean;
+    isFuture: boolean;
+    isToday: boolean;
+    isNavigating: boolean;
+    viewMode: string;
+};
+
+export default function TodayHeader({
+    label,
+    selectedDateString,
+    onPrev,
+    onNext,
+    onSelectDate,
+    showNav,
+    isFuture,
+    isToday,
     isNavigating,
-    viewMode 
-}: any) {
+    viewMode
+}: TodayHeaderProps) {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <div className="text-center space-y-2 w-full">
             <div className="flex items-center justify-between">
                 <Button
                     onPress={onPrev}
                     isDisabled={isNavigating}
-                    isIconOnly variant="light" radius="full"
-                    className={`text-neutral-400 hover:text-neutral-700 ${!showNav || isFuture ? "invisible pointer-events-none" : ""}`}
+                    isIconOnly
+                    variant="light"
+                    radius="full"
+                    className={`text-neutral-400 hover:text-neutral-700 ${
+                        !showNav || isFuture ? "invisible pointer-events-none" : ""
+                    }`}
                     aria-label="Previous Day"
                 >
                     <ChevronLeft size={24} />
                 </Button>
 
-                <h1 className="text-lg sm:text-xl md:text-2xl font-medium text-gray-700 min-w-[200px] transition-all">
-                    {label}
-                </h1>
+                <Popover
+                    isOpen={isOpen}
+                    onOpenChange={setIsOpen}
+                    placement="bottom"
+                >
+                    <PopoverTrigger>
+                        <Button
+                            variant="light"
+                            className="text-lg sm:text-xl md:text-2xl font-medium text-gray-700 px-2"
+                            isDisabled={isNavigating}
+                        >
+                            {label}
+                        </Button>
+                    </PopoverTrigger>
+
+                    <PopoverContent className="p-2">
+                        <Calendar
+                            showMonthAndYearPickers
+                            value={(() => {
+                                const [year, month, day] = selectedDateString
+                                    .split("-")
+                                    .map(Number);
+                                return new CalendarDate(year, month, day);
+                            })()}
+                            maxValue={(() => {
+                                const today = new Date().toLocaleDateString("en-CA");
+                                const [year, month, day] = today.split("-").map(Number);
+                                return new CalendarDate(year, month, day);
+                            })()}
+                            onChange={(date) => {
+                                setIsOpen(false);
+                                onSelectDate(date.toString());
+                            }}
+                        />
+                    </PopoverContent>
+                </Popover>
 
                 <Button
                     onPress={onNext}
                     isDisabled={isToday || isNavigating}
-                    isIconOnly variant="light" radius="full"
-                    className={`text-neutral-400 hover:text-neutral-700 ${!showNav || isToday || isFuture ? "invisible pointer-events-none" : ""}`}
+                    isIconOnly
+                    variant="light"
+                    radius="full"
+                    className={`text-neutral-400 hover:text-neutral-700 ${
+                        !showNav || isToday || isFuture
+                            ? "invisible pointer-events-none"
+                            : ""
+                    }`}
                     aria-label="Next Day"
                 >
                     <ChevronRight size={24} />
