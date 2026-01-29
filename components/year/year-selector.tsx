@@ -2,18 +2,21 @@
 
 import { Button, Switch } from "@heroui/react";
 import { ChevronLeft, ChevronRight, Grid2X2, Rows3 } from "lucide-react";
-import NextLink from "next/link";
 
 type YearSelectorProps = {
     year: number;
     isCompact: boolean;
     setIsCompact: (v: boolean) => void;
+    onNavigate: (year: number) => void;
+    isNavigating: boolean;
 };
 
 export default function YearSelector({
     year,
     isCompact,
     setIsCompact,
+    onNavigate,
+    isNavigating
 }: YearSelectorProps) {
     const currentYear = new Date().getFullYear();
     const prevYear = year - 1;
@@ -27,9 +30,8 @@ export default function YearSelector({
 
             <div className="flex items-center gap-4">
                 <Button
-                    as={NextLink}
-                    href={`/home/year?year=${prevYear}`}
-                    prefetch
+                    onPress={() => onNavigate(prevYear)}
+                    isDisabled={isNavigating}
                     isIconOnly
                     variant="light"
                     radius="full"
@@ -39,15 +41,13 @@ export default function YearSelector({
                     <ChevronLeft size={24} />
                 </Button>
 
-                <h1 className="text-2xl font-medium text-gray-700 select-none">
+                <h1 className="text-2xl font-medium text-gray-700 select-none min-w-[60px] text-center tabular-nums">
                     {year}
                 </h1>
 
                 <Button
-                    as={NextLink}
-                    href={isFuture ? "#" : `/home/year?year=${nextYear}`}
-                    prefetch={!isFuture}
-                    isDisabled={isFuture}
+                    onPress={() => onNavigate(nextYear)}
+                    isDisabled={isFuture || isNavigating}
                     isIconOnly
                     variant="light"
                     radius="full"
