@@ -32,6 +32,11 @@ export default function TodayHeader({
 }: TodayHeaderProps) {
     const [isOpen, setIsOpen] = useState(false);
 
+    function toCalendarDate(yyyyMmDd: string) {
+        const [y, m, d] = yyyyMmDd.split("-").map(Number);
+        return new CalendarDate(y, m, d);
+    }
+
     return (
         <div className="text-center space-y-2 w-full">
             <div className="flex items-center justify-between">
@@ -67,17 +72,8 @@ export default function TodayHeader({
                     <PopoverContent className="p-2">
                         <Calendar
                             showMonthAndYearPickers
-                            value={(() => {
-                                const [year, month, day] = selectedDateString
-                                    .split("-")
-                                    .map(Number);
-                                return new CalendarDate(year, month, day);
-                            })()}
-                            maxValue={(() => {
-                                const today = new Date().toLocaleDateString("en-CA");
-                                const [year, month, day] = today.split("-").map(Number);
-                                return new CalendarDate(year, month, day);
-                            })()}
+                            value={toCalendarDate(selectedDateString)}
+                            maxValue={toCalendarDate(new Date().toLocaleDateString("en-CA"))}
                             onChange={(date) => {
                                 setIsOpen(false);
                                 onSelectDate(date.toString());
