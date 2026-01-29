@@ -25,7 +25,7 @@ export default function TodayHeader({label,
                     <ChevronLeft size={24} />
                 </Button>
 
-                <h1 className="text-2xl font-medium text-gray-700 min-w-[200px] transition-all">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-medium text-gray-700 min-w-[200px] transition-all">
                     {label}
                 </h1>
 
