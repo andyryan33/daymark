@@ -29,6 +29,7 @@ model DayEntry {
   date      DateTime
   mood      Int
   notes     String?
+  isDaymark Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

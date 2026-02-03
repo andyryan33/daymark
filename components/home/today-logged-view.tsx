@@ -1,17 +1,19 @@
 'use client';
 
-import { Button, Card } from "@heroui/react";
+import { Button, Card, Switch } from "@heroui/react";
 import { motion } from "framer-motion";
 import { MoodValue, MOODS } from "@/lib/mood";
 import { Pencil } from "lucide-react";
 
 type TodayLoggedViewProps = {
-    mood: MoodValue
-    notes?: string
-    onEdit: () => void
+    mood: MoodValue;
+    notes?: string;
+    isDaymark?: boolean;
+    onToggleDaymark: () => void;
+    onEdit: () => void;
 }
 
-export default function TodayLoggedView({ mood, notes, onEdit }: TodayLoggedViewProps) {
+export default function TodayLoggedView({ mood, notes, onEdit, isDaymark, onToggleDaymark }: TodayLoggedViewProps) {
     const moodMeta = MOODS.find((m) => m.value === mood)
 
     return (
@@ -22,6 +24,15 @@ export default function TodayLoggedView({ mood, notes, onEdit }: TodayLoggedView
             className="w-full max-w-md"
         >
             <Card className="relative w-full p-6">
+                <div className="absolute top-4 left-4">
+                    <Switch
+                        size="sm"
+                        color="primary"
+                        isSelected={isDaymark}
+                        onValueChange={onToggleDaymark}
+                    />
+                </div>
+
                 <div className="absolute top-4 right-4">
                     <Button 
                         isIconOnly 
@@ -38,9 +49,36 @@ export default function TodayLoggedView({ mood, notes, onEdit }: TodayLoggedView
 
                 <div className="space-y-6 text-center">
                     <div className="flex flex-col items-center gap-2">
-                        <div
-                            className={`h-16 w-16 rounded-full ${moodMeta?.color} ring-4 ring-offset-2 ring-slate-200 shadow-lg shadow-neutral-200`}
-                        />
+                        <div className="relative h-16 w-16">
+
+                            <motion.div
+                                initial={false}
+                                animate={{
+                                    scale: isDaymark ? 1 : 0.85,
+                                    opacity: isDaymark ? 1 : 0,
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 300,
+                                    damping: 22,
+                                }}
+                                className="absolute inset-0 rounded-full ring-4 ring-offset-3 ring-slate-300"
+                            />
+
+                            <motion.div
+                                animate={{
+                                    scale: isDaymark ? 1.02 : 1,
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 300,
+                                    damping: 20,
+                                }}
+                                className={`relative h-full w-full rounded-full ${moodMeta?.color} shadow-lg shadow-neutral-200 ${
+                                    isDaymark ? "animate-pulse" : ""
+                                }`}
+                            />
+                        </div>
                         <p className="text-xs pt-2 uppercase tracking-wider text-neutral-500">
                             Today you felt
                         </p>

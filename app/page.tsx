@@ -33,16 +33,16 @@ export default function LandingPage() {
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#708ea5] opacity-75"></span>
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-[#708ea5]"></span>
                         </span>
-                        Your Daily Mood
+                        A daily reflection app
                     </div>
 
                     <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-neutral-900 leading-[0.9]">
-                        mark your days, <br />
+                        mark your days,<br />
                         <span className="text-primary">track your light.</span>
                     </h1>
                     
                     <p className="text-lg text-neutral-500 max-w-lg mx-auto leading-relaxed">
-                        A mindful space to record your daily emotions and visualize your year in color.
+                        A calm space to reflect, mark meaningful days, and see your year unfold in color.
                     </p>
 
                     <div className="pt-4">
@@ -66,17 +66,17 @@ export default function LandingPage() {
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                     <FeatureCard 
                         icon={<Heart size={24} />} 
-                        title="Reflective Logging" 
+                        title="Daily Reflection" 
                         desc="Fast, friction-less entry for your daily mood and thoughts." 
                     />
                     <FeatureCard 
                         icon={<LineChart size={24} />} 
-                        title="Visual Insights" 
+                        title="Your Year, Remembered" 
                         desc="See your month and year at a glance with beautiful color grids." 
                     />
                     <FeatureCard 
                         icon={<Calendar size={24} />} 
-                        title="Timeline" 
+                        title="Marked Timelines" 
                         desc="A scrolling history of your journey, exactly how you remember it." 
                     />
                 </div>

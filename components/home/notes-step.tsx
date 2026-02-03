@@ -8,6 +8,7 @@ import { ChevronLeft } from "lucide-react";
 type NotesStepProps = {
     mood: MoodValue
     notes: string
+    isDaymark?: boolean
     onChange: (value: string) => void
     onSave: () => void
     onSkip: () => void
@@ -17,6 +18,7 @@ type NotesStepProps = {
 export default function NotesStep({
     mood,
     notes,
+    isDaymark,
     onChange,
     onSave,
     onSkip,
@@ -33,7 +35,7 @@ export default function NotesStep({
         >
 
             <div className="flex flex-col items-center gap-3">
-                <div className={`h-16 w-16 rounded-full ${moodMeta?.color} ring-4 ring-offset-2 ring-slate-200 shadow-lg shadow-neutral-200`} />
+                <div className={`h-16 w-16 rounded-full ${moodMeta?.color} ${isDaymark && "ring-4 ring-offset-3 ring-slate-200"} shadow-lg shadow-neutral-200`} />
                 <p className="text-center text-sm text-neutral-500">
                     Feeling <span className="font-bold text-neutral-700">{moodMeta?.label}</span>
                 </p>

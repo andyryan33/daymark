@@ -3,15 +3,17 @@
 import { useState, useEffect, useOptimistic, useTransition } from "react";
 import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { Check } from "lucide-react"; 
+import { CalendarCheck, CircleCheckBig } from "lucide-react"; 
 import { MoodValue } from "@/lib/mood";
 import { saveDayEntry } from "@/actions/save-day-entry";
+import { toggleDaymark as toggleDaymarkAction } from "@/actions/toggle-daymark";
 
 export type ViewMode = "idle" | "notes" | "logged" | "editing";
 
 export type DayEntry = {
     mood: MoodValue;
     notes: string;
+    isDaymark: boolean;
 } | null;
 
 export type UseTodayLogicProps = {
@@ -39,7 +41,11 @@ export function useTodayLogic({
 
     const [optimisticEntry, setOptimisticEntry] = useOptimistic<DayEntry, DayEntry>(
         initialData
-            ? { mood: initialData.mood, notes: initialData.notes || "" }
+            ? {
+                mood: initialData.mood,
+                notes: initialData.notes || "",
+                isDaymark: initialData.isDaymark ?? false,
+            }
             : null,
         (_, newValue) => newValue
     );
@@ -95,7 +101,11 @@ export function useTodayLogic({
 
         setViewMode("logged");
 
-        const payload = { mood: draftMood, notes: draftNotes };
+        const payload = {
+            mood: draftMood,
+            notes: draftNotes,
+            isDaymark: optimisticEntry?.isDaymark ?? false,
+        };
 
         startSaving(async () => {
             setOptimisticEntry(payload);
@@ -104,10 +114,13 @@ export function useTodayLogic({
                 await saveDayEntry(draftMood, optimisticDate, draftNotes);
                 
                 addToast({
-                    title: "Day marked.",
-                    color: "primary",
+                    title: "Day logged.",
+                    color: "default",
                     hideIcon: true,
-                    endContent: <Check size={18} />,
+                    classNames: {
+                        title: "text-primary"
+                    },
+                    endContent: <CalendarCheck size={18} className="text-primary"/>,
                 });
                 
                 router.refresh();
@@ -118,6 +131,28 @@ export function useTodayLogic({
                     color: "danger",
                 });
             }
+        });
+    };
+
+    const toggleDaymarkOptimistic = () => {
+        if (!optimisticEntry) return;
+
+        const nextValue = !optimisticEntry.isDaymark;
+
+        startSaving(async () => {
+            setOptimisticEntry({
+                ...optimisticEntry,
+                isDaymark: nextValue,
+            });
+
+            await toggleDaymarkAction(selectedDateString, nextValue);
+            
+            addToast({
+                title: nextValue ? "Daymarked." : "Day unmarked.",
+                color: nextValue ? "primary" : "default",
+                hideIcon: true,
+                endContent: <CircleCheckBig size={18} />,
+            });
         });
     };
 
@@ -161,8 +196,10 @@ export function useTodayLogic({
             setViewMode,
             navigate,
             save,
+            toggleDaymark: toggleDaymarkOptimistic,
             cancel,
             back
         }
+
     };
 }

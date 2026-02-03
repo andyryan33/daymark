@@ -24,7 +24,7 @@ export default function YearGridSkeleton({ isCompact = false }: YearGridSkeleton
                             ))}
                             
                             {Array.from({ length: 30 }).map((_, j) => (
-                                <Skeleton key={j} className="aspect-square w-full rounded-[2px]" />
+                                <Skeleton key={j} className="aspect-square w-full rounded-full" />
                             ))}
                         </div>
                     </div>

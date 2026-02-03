@@ -9,6 +9,7 @@ type GetDayEntryResponse = {
     data?: {
         mood: MoodValue;
         notes: string | null;
+        isDaymark: boolean;
     } | null;
 };
 
@@ -36,7 +37,8 @@ export async function getDayEntry(dateString: string): Promise<GetDayEntryRespon
             success: true, 
             data: {
                 mood: entry.mood as MoodValue,
-                notes: entry.notes
+                notes: entry.notes,
+                isDaymark: entry.isDaymark,
             } 
         };
 
@@ -60,6 +62,7 @@ export async function getDayEntries(limit = 30) {
             date: true,
             mood: true,
             notes: true,
+            isDaymark: true,
         },
     });
 }
@@ -83,6 +86,7 @@ export async function getYearlyEntries(year: number) {
         select: {
             date: true,
             mood: true,
+            isDaymark: true,
         },
     });
 }

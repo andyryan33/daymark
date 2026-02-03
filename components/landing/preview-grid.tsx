@@ -38,7 +38,7 @@ export default function PreviewGrid() {
                     key={i} 
                     variants={item}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className={`aspect-square rounded-md ${color} shadow-sm`}
+                    className={`aspect-square rounded-full ${color} shadow-sm`}
                 />
             ))}
         </motion.div>

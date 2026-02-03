@@ -1,6 +1,6 @@
 'use client';
 
-import { Modal, ModalContent, Button, useDisclosure } from "@heroui/react";
+import { Modal, ModalContent, Button, useDisclosure, Switch } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MOODS } from "@/lib/mood";
@@ -15,8 +15,8 @@ type WelcomeModalProps = {
 export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const [step, setStep] = useState(0);
-
     const [demoMood, setDemoMood] = useState(MOODS[2].value);
+    const [demoDaymark, setDemoDaymark] = useState(false);
 
     useEffect(() => {
         if (shouldShow) onOpen();
@@ -24,7 +24,6 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
 
     const handleComplete = async () => {
         onClose();
-
         setTimeout(() => completeWalkthrough(), 300);
     };
 
@@ -75,6 +74,53 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
             )
         },
         {
+            title: "Mark the days that matter.",
+            subtitle: "Daymark moments you want to remember.",
+            content: (
+                <div className="flex flex-col items-center py-6 h-full">
+                    <div className="relative w-48 bg-white border border-neutral-200 shadow-xl shadow-neutral-200/50 rounded-2xl p-6 flex flex-col items-center gap-4 transition-all duration-300">
+
+                        <div className="absolute top-3 left-3">
+                            <Switch
+                                size="sm"
+                                onValueChange={() => setDemoDaymark(!demoDaymark)}
+                            />
+                             {!demoDaymark && (
+                                <span className="absolute -top-1 -right-2 flex h-2 w-2">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#facc15] opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#facc15]"></span>
+                                </span>
+                             )}
+                        </div>
+
+                        <motion.div
+                            layout
+                            className={clsx(
+                                "h-16 w-16 bg-[#facc15] shadow-sm transition-all duration-300",
+                                demoDaymark 
+                                    ? "rounded-full ring-4 ring-offset-2 ring-slate-200" 
+                                    : "rounded-full"
+                            )}
+                        />
+
+                        <div className="space-y-1.5 text-center w-full flex flex-col items-center opacity-50">
+                            <div className="h-1.5 w-16 bg-neutral-200 rounded-full" />
+                            <div className="h-1.5 w-10 bg-neutral-200 rounded-full" />
+                        </div>
+                    </div>
+                    
+                    <motion.p 
+                        key={demoDaymark ? "marked" : "normal"}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-6 text-[10px] font-bold text-neutral-400 uppercase tracking-widest"
+                    >
+                        {demoDaymark ? "Daymarked!" : "Unmarked"}
+                    </motion.p>
+                </div>
+            )
+        },
+        {
             title: "Your timeline awaits",
             subtitle: "Over time, you will see patterns, memories, and growth.",
             content: (
@@ -83,7 +129,8 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
                         <div 
                             key={i} 
                             className={clsx(
-                                "aspect-square rounded-lg", 
+                                "aspect-square transition-all duration-500", 
+                                i === 3 && demoDaymark ? "rounded-full ring-2 ring-offset-2 ring-slate-300" : "rounded-full",
                                 i % 3 === 0 ? "bg-[#facc15]" : i % 2 === 0 ? "bg-[#0BEA8D]" : "bg-[#94a3b8]"
                             )} 
                         />
@@ -107,7 +154,7 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
             }}
         >
             <ModalContent className="p-0 overflow-hidden max-w-[360px]">
-                <div className="p-6 h-[420px] flex flex-col relative">
+                <div className="p-6 flex flex-col relative">
                     <div className="flex justify-center gap-1.5 mb-8">
                         {steps.map((_, i) => (
                             <motion.div 

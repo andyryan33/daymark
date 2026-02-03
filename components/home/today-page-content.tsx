@@ -50,6 +50,7 @@ export default function TodayPageContent(props: TodayPageContentProps) {
                 return (
                     <MoodSelector
                         value={draftMood}
+                        isDaymark={optimisticEntry?.isDaymark}
                         onChange={(v) => { 
                             actions.setDraftMood(v); 
                             actions.setViewMode("notes"); 
@@ -62,6 +63,7 @@ export default function TodayPageContent(props: TodayPageContentProps) {
                     <NotesStep
                         mood={draftMood!}
                         notes={draftNotes}
+                        isDaymark={optimisticEntry?.isDaymark}
                         onChange={actions.setDraftNotes}
                         onSave={actions.save}
                         onSkip={actions.save}
@@ -75,6 +77,8 @@ export default function TodayPageContent(props: TodayPageContentProps) {
                         mood={optimisticEntry.mood}
                         notes={optimisticEntry.notes}
                         onEdit={() => actions.setViewMode("editing")}
+                        isDaymark={optimisticEntry.isDaymark}
+                        onToggleDaymark={actions.toggleDaymark}
                     />
                 );
         }
@@ -98,7 +102,7 @@ export default function TodayPageContent(props: TodayPageContentProps) {
                     viewMode={viewMode}
                 />
 
-                <div className="w-full min-h-[300px] flex flex-col items-center">
+                <div className="w-full flex flex-col items-center">
                    {renderContent()}
                 </div>
             </div>

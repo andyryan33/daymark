@@ -8,11 +8,12 @@ import { MOODS, MoodValue } from "@/lib/mood";
 
 type MoodSelectorProps = {
     value?: MoodValue
+    isDaymark?: boolean
     onChange: (value: MoodValue) => void
     onCancel?: () => void
 }
 
-export default function MoodSelector({ value, onChange, onCancel }: MoodSelectorProps) {
+export default function MoodSelector({ value, isDaymark, onChange, onCancel }: MoodSelectorProps) {
     const handleSelection = (moodValue: MoodValue) => {
         if (typeof navigator !== "undefined" && navigator.vibrate) {
             navigator.vibrate(15);
@@ -44,8 +45,8 @@ export default function MoodSelector({ value, onChange, onCancel }: MoodSelector
                                     "relative h-14 w-14 rounded-full p-0",
                                     mood.color,
                                     "transition-all duration-300 ease-out",
-                                    selected
-                                    ? "scale-110 ring-4 ring-offset-2 ring-slate-200"
+                                    selected && isDaymark
+                                    ? "scale-110 ring-4 ring-offset-3 ring-slate-200"
                                     : "opacity-40 hover:opacity-100 hover:scale-105"
                                 )}
                             >

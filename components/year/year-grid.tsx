@@ -30,20 +30,26 @@ export default function YearGrid({ year, entries, isCompact }: { year: number, e
             return entryDate === dateStr;
         });
 
-        const base = "aspect-square w-full rounded-md transition-all duration-300 border box-border block";
+        const base = "relative aspect-square rounded-full w-full transition-all duration-300 border box-border block";
 
         if (isFuture) return cn(base, "bg-neutral-100 border-neutral-100 cursor-default");
-        
+
         if (entry) {
             const moodColor = MOODS.find(m => m.value === entry.mood)?.color;
-            return cn(base, moodColor, "border-transparent hover:ring-2 hover:ring-offset-2 hover:ring-neutral-200 hover:scale-110 hover:z-10");
+            return cn(
+                base,
+                moodColor,
+                "border-transparent hover:scale-110 hover:z-10",
+                entry.isDaymark ? "rounded-full ring-2 ring-slate-300" : "rounded-full",
+                isCompact ? "ring-offset-1 sm:ring-offset-2" : "ring-offset-3 md:ring-offset-2"
+            );
         }
 
         if (isToday) {
-            return cn(base, "bg-neutral-50 border-neutral-300 ring-1 ring-neutral-300 ring-offset-1 hover:bg-neutral-100");
+            return cn(base, "bg-neutral-50 border-neutral-300 ring-1 ring-neutral-300 ring-offset-1 hover:bg-neutral-100", "rounded-full");
         }
 
-        return cn(base, "bg-neutral-100 border-transparent hover:bg-neutral-200");
+        return cn(base, "bg-neutral-100 border-transparent hover:bg-neutral-200", "rounded-full");
     };
 
     return (
@@ -78,7 +84,7 @@ export default function YearGrid({ year, entries, isCompact }: { year: number, e
                                 </span>
                             </div>
 
-                            <div className="grid grid-cols-7 gap-1.5">
+                            <div className={`grid grid-cols-7 ${isCompact ? 'gap-2.5 sm:gap-3' : 'gap-4 md:gap-3'}`}>
                                 {WEEKDAYS.map((day, i) => (
                                     <div key={day + i} className="text-[9px] font-medium text-neutral-400 text-center py-1">
                                         {day}
