@@ -4,14 +4,17 @@ import TimelineSkeleton from "@/components/timeline/timeline-skeleton";
 import TimelineList from "@/components/timeline/timeline-list";
 
 export default async function TimelinePage() {
-    const entries = await getDayEntries();
+    const { data: initialEntries, nextCursor } = await getDayEntries();
 
     return (
         <>
-            {entries?.length > 0 ? ( 
+            {initialEntries?.length > 0 ? ( 
                 <div className="px-6 py-8 w-full max-w-2xl mx-auto">
                     <Suspense fallback={<TimelineSkeleton />}>
-                        <TimelineList entries={entries} />
+                        <TimelineList 
+                            initialEntries={initialEntries} 
+                            initialCursor={nextCursor}
+                        />
                     </Suspense>
                 </div>
             ) : (

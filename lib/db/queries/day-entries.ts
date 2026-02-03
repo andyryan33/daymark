@@ -13,6 +13,17 @@ type GetDayEntryResponse = {
     } | null;
 };
 
+type DayEntryListResponse = {
+    data: {
+        id: string;
+        date: Date;
+        mood: number;
+        notes: string | null;
+        isDaymark: boolean;
+    }[];
+    nextCursor: string | null;
+};
+
 export async function getDayEntry(dateString: string): Promise<GetDayEntryResponse> {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -48,23 +59,41 @@ export async function getDayEntry(dateString: string): Promise<GetDayEntryRespon
     }
 }
 
-export async function getDayEntries(limit = 30) {
+export async function getDayEntries(cursor?: string, limit = 20): Promise<DayEntryListResponse> {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) return [];
+    if (!user) return { data: [], nextCursor: null };
 
-    return db.dayEntry.findMany({
+    const entries = await db.dayEntry.findMany({
         where: { userId: user.id },
         orderBy: { date: "desc" },
-        take: limit,
+        take: limit + 1,
+        skip: cursor ? 1 : 0, 
+        cursor: cursor ? { id: cursor } : undefined,
         select: {
+            id: true,
             date: true,
             mood: true,
             notes: true,
             isDaymark: true,
         },
     });
+
+    let nextCursor: string | null = null;
+
+    if (entries.length > limit) {
+        const nextItem = entries.pop();
+
+        if (nextItem) {
+            nextCursor = nextItem.id; 
+        }
+    }
+
+    return {
+        data: entries,
+        nextCursor,
+    };
 }
 
 export async function getYearlyEntries(year: number) {
