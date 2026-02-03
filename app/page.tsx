@@ -2,7 +2,7 @@
 
 import { Button } from "@heroui/react";
 import { signInWithGoogle } from "@/lib/supabase/client";
-import { LogIn, Heart, Calendar, LineChart } from "lucide-react";
+import { LogIn, NotebookPen, ScrollText, CalendarDays } from "lucide-react";
 import AboutModal from "@/components/landing/about-modal";
 import PreviewGrid from "@/components/landing/preview-grid";
 
@@ -65,17 +65,17 @@ export default function LandingPage() {
             <section className="relative z-10 bg-white border-y border-neutral-200 py-16 md:py-24 px-6 mt-10">
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                     <FeatureCard 
-                        icon={<Heart size={24} />} 
+                        icon={<NotebookPen size={24} />} 
                         title="Daily Reflection" 
                         desc="Fast, friction-less entry for your daily mood and thoughts." 
                     />
                     <FeatureCard 
-                        icon={<LineChart size={24} />} 
+                        icon={<CalendarDays size={24} />} 
                         title="Your Year, Remembered" 
                         desc="See your month and year at a glance with beautiful color grids." 
                     />
                     <FeatureCard 
-                        icon={<Calendar size={24} />} 
+                        icon={<ScrollText size={24} />} 
                         title="Marked Timelines" 
                         desc="A scrolling history of your journey, exactly how you remember it." 
                     />

@@ -44,7 +44,7 @@ export default function TimelineRow({ entry, isLast }: { entry: any, isLast: boo
                 
                 <div className={`
                     relative z-10 mt-1.5 h-3 w-3 rounded-full 
-                    ${entry.isDaymark && `ring-2 ring-offset-1 ring-slate-300`} transition-transform duration-200 group-hover:scale-125
+                    ${entry.isDaymark && `ring-2 ring-offset-2 ring-slate-300 scale-115`} transition-transform duration-200 group-hover:scale-125
                     ${mood?.color}
                 `} />
             </div>

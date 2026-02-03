@@ -41,7 +41,7 @@ export default function YearGrid({ year, entries, isCompact }: { year: number, e
                 moodColor,
                 "border-transparent hover:scale-110 hover:z-10",
                 entry.isDaymark ? "rounded-full ring-2 ring-slate-300" : "rounded-full",
-                isCompact ? "ring-offset-1 sm:ring-offset-2" : "ring-offset-3 md:ring-offset-2"
+                isCompact ? "ring-offset-1 sm:ring-offset-2" : "ring-offset-2 sm:ring-offset-3 md:ring-offset-2"
             );
         }
 
