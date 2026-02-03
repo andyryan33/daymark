@@ -45,9 +45,12 @@ export default function MoodSelector({ value, isDaymark, onChange, onCancel }: M
                                     "relative h-14 w-14 rounded-full p-0",
                                     mood.color,
                                     "transition-all duration-300 ease-out",
-                                    selected && isDaymark
-                                    ? "scale-110 ring-4 ring-offset-3 ring-slate-200"
-                                    : "opacity-40 hover:opacity-100 hover:scale-105"
+
+                                    selected && "scale-110 shadow-lg shadow-neutral-200",
+
+                                    selected && isDaymark && "ring-4 ring-offset-3 ring-slate-200 shadow-lg shadow-neutral-200",
+
+                                    !selected && "opacity-40 hover:opacity-100 hover:scale-105"
                                 )}
                             >
                                 <span className="sr-only">{mood.label}</span>
