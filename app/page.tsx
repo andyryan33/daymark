@@ -82,8 +82,12 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <footer className="py-10 flex flex-col items-center gap-2">
+            <footer className="py-10 flex flex-col items-center gap-3">
                 <AboutModal />
+                <div className="flex gap-4 text-[10px] uppercase tracking-widest text-neutral-400">
+                    <a href="/privacy" className="hover:text-[#708ea5]">Privacy</a>
+                    <a href="/terms" className="hover:text-[#708ea5]">Terms</a>
+                </div>
                 <p className="text-[10px] text-neutral-400 uppercase tracking-widest">
                     &copy; {new Date().getFullYear()} daymark
                 </p>
