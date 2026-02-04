@@ -63,6 +63,22 @@ export default function AboutModal({ isOpen: extOpen, onOpenChange: extChange, i
                                                 This app uses a single, functional cookie to remember your local timezone so your entries align with your day. It does not track you or sell your data.
                                             </p>
                                         </div>
+                                        <div className="flex gap-4 justify-center text-xs">
+                                            <a
+                                                href="/privacy"
+                                                target="_blank"
+                                                className="text-primary hover:text-primary-600"
+                                            >
+                                                Privacy Policy
+                                            </a>
+                                            <a
+                                                href="/terms"
+                                                target="_blank"
+                                                className="text-primary hover:text-primary-600"
+                                            >
+                                                Terms of Service
+                                            </a>
+                                        </div>
                                     </div>
 
                                     <Divider className="opacity-50" />
