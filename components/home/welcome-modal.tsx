@@ -3,7 +3,7 @@
 import { Modal, ModalContent, Button, useDisclosure, Switch } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MOODS } from "@/lib/mood";
+import { MOODS } from "@/lib/utils/mood";
 import { completeWalkthrough } from "@/actions/user";
 import { ChevronRight, Check } from "lucide-react";
 import clsx from "clsx";
@@ -124,7 +124,7 @@ export default function WelcomeModal({ shouldShow }: WelcomeModalProps) {
             title: "Your timeline awaits",
             subtitle: "Over time, you will see patterns, memories, and growth.",
             content: (
-                <div className="py-8 grid grid-cols-7 gap-2 opacity-60">
+                <div className="py-8 grid grid-cols-7 gap-2">
                      {Array.from({ length: 14 }).map((_, i) => (
                         <div 
                             key={i} 

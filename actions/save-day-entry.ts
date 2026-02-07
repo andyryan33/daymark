@@ -2,7 +2,7 @@
 
 import db from "@/lib/db/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { MoodValue } from "@/lib/mood";
+import { MoodValue } from "@/lib/utils/mood";
 import { revalidatePath } from "next/cache";
 
 type SaveDayEntryResponse = {

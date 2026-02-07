@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 
 export default function PreviewGrid() {
     const sampleMoods = [
-        "bg-[#facc15]", "bg-[#4ade80]", "bg-[#94a3b8]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#4ade80]",
-        "bg-[#475569]", "bg-[#94a3b8]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#0f172a]", "bg-[#4ade80]", "bg-[#4ade80]",
-        "bg-[#facc15]", "bg-[#475569]", "bg-[#4ade80]", "bg-[#4ade80]", "bg-[#475569]", "bg-[#facc15]", "bg-[#0f172a]",
-        "bg-[#4ade80]", "bg-[#94a3b8]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#4ade80]", "bg-[#4ade80]"
+        "bg-[#facc15]", "bg-[#4ade80]", "bg-[#94a3b8]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#4ade80]", "bg-[#94a3b8] ring-2 ring-slate-300 ring-offset-2 sm:ring-offset-3",
+        "bg-[#475569]", "bg-[#94a3b8]", "bg-[#facc15] ring-2 ring-slate-300 ring-offset-2 sm:ring-offset-3", "bg-[#4ade80]", "bg-[#0f172a]", "bg-[#4ade80]", "bg-[#4ade80]",
+        "bg-[#facc15]", "bg-[#475569]", "bg-[#4ade80]", "bg-[#94a3b8]", "bg-[#475569]", "bg-[#facc15]", "bg-[#0f172a]",
+        "bg-[#4ade80]", "bg-[#94a3b8]", "bg-[#4ade80]", "bg-[#facc15]", "bg-[#94a3b8]", "bg-[#4ade80] ring-2 ring-slate-300 ring-offset-2 sm:ring-offset-3", "bg-[#4ade80]"
     ];
 
     const container = {
@@ -31,7 +31,7 @@ export default function PreviewGrid() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-7 gap-1.5 sm:gap-2 md:gap-3 p-6 bg-white rounded-3xl shadow-2xl shadow-neutral-200/40 border border-neutral-100"
+            className="grid grid-cols-7 gap-2 md:gap-3 p-6 bg-white rounded-3xl shadow-2xl shadow-neutral-200/40 border border-neutral-100"
         >
             {sampleMoods.map((color, i) => (
                 <motion.div 

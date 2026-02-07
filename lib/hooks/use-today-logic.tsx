@@ -4,7 +4,7 @@ import { useState, useEffect, useOptimistic, useTransition } from "react";
 import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { CalendarCheck, CircleCheckBig } from "lucide-react"; 
-import { MoodValue } from "@/lib/mood";
+import { MoodValue } from "@/lib/utils/mood";
 import { saveDayEntry } from "@/actions/save-day-entry";
 import { toggleDaymark as toggleDaymarkAction } from "@/actions/toggle-daymark";
 

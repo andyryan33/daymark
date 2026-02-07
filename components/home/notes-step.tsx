@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Textarea } from "@heroui/react";
-import { MoodValue, MOODS } from "@/lib/mood";
+import { MoodValue, MOODS } from "@/lib/utils/mood";
 import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 

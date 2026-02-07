@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { MOODS } from "@/lib/mood";
+import { MOODS } from "@/lib/utils/mood";
 
 export default function TimelineRow({ entry, isLast }: { entry: any, isLast: boolean }) {
     const router = useRouter();

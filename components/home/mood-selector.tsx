@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@heroui/react";
 import { CircleX } from "lucide-react";
 import clsx from "clsx";
-import { MOODS, MoodValue } from "@/lib/mood";
+import { MOODS, MoodValue } from "@/lib/utils/mood";
 
 type MoodSelectorProps = {
     value?: MoodValue

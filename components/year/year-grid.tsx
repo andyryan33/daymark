@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from "react";
-import { MOODS } from "@/lib/mood";
+import { MOODS } from "@/lib/utils/mood";
 import { Tooltip } from "@heroui/react";
 import { motion } from "framer-motion";
 import NextLink from "next/link";

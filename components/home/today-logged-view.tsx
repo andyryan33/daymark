@@ -2,7 +2,7 @@
 
 import { Button, Card, Switch } from "@heroui/react";
 import { motion } from "framer-motion";
-import { MoodValue, MOODS } from "@/lib/mood";
+import { MoodValue, MOODS } from "@/lib/utils/mood";
 import { Pencil } from "lucide-react";
 
 type TodayLoggedViewProps = {
