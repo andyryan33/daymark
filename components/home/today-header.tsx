@@ -71,6 +71,7 @@ export default function TodayHeader({
 
                     <PopoverContent className="p-2">
                         <Calendar
+                            color="primary"
                             showMonthAndYearPickers
                             value={toCalendarDate(selectedDateString)}
                             maxValue={toCalendarDate(new Date().toLocaleDateString("en-CA"))}

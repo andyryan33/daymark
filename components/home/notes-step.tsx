@@ -15,6 +15,8 @@ type NotesStepProps = {
     onBack: () => void
 }
 
+const MAX_CHARS = 500;
+
 export default function NotesStep({
     mood,
     notes,
@@ -25,6 +27,8 @@ export default function NotesStep({
     onBack
 }: NotesStepProps) {
     const moodMeta = MOODS.find((m) => m.value === mood);
+    const charCount = notes.length;
+    const isNearLimit = charCount > MAX_CHARS * 0.9;
 
     return (
         <motion.div 
@@ -42,11 +46,18 @@ export default function NotesStep({
             </div>
 
             <Textarea
+                variant="faded"
                 value={notes}
                 onValueChange={onChange}
                 placeholder="Anything you want to remember about today?"
                 minRows={4}
+                maxLength={MAX_CHARS}
                 size="lg"
+                isInvalid={isNearLimit}
+                errorMessage={`${charCount} / ${MAX_CHARS}`}
+                classNames={{
+                    inputWrapper: "border-none hover:bg-default-200"
+                }}
             />
 
             <div className="flex items-center justify-between pt-2">

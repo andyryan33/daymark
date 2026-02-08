@@ -3,7 +3,7 @@
 import { useState, useEffect, useOptimistic, useTransition } from "react";
 import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { CalendarCheck, CircleCheckBig } from "lucide-react"; 
+import { CalendarCheck, CircleCheckBig, CircleOff } from "lucide-react"; 
 import { MoodValue } from "@/lib/utils/mood";
 import { saveDayEntry } from "@/actions/save-day-entry";
 import { toggleDaymark as toggleDaymarkAction } from "@/actions/toggle-daymark";
@@ -151,7 +151,7 @@ export function useTodayLogic({
                 title: nextValue ? "Daymarked." : "Day unmarked.",
                 color: nextValue ? "primary" : "default",
                 hideIcon: true,
-                endContent: <CircleCheckBig size={18} />,
+                endContent: nextValue ? <CircleCheckBig size={18} /> : <CircleOff size={18} />,
             });
         });
     };
