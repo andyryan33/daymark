@@ -57,7 +57,7 @@ export default function LandingPage() {
                     </div>
                 </div>
 
-                <div className="mt-20 w-full max-w-2xl px-4 pointer-events-none select-none">
+                <div className="mt-20 w-full max-w-lg md:max-w-xl px-4 pointer-events-none select-none">
                     <PreviewGrid />
                 </div>
             </main>
