@@ -26,7 +26,7 @@ const config: Config = {
                             700: "#385476",
                             800: "#233B5F",
                             900: "#15294F",
-                            foreground: "#FFFFFF",
+                            foreground: "#FAFAFA",
                             DEFAULT: "#708EA5",
                         },
                         danger: {
@@ -81,6 +81,20 @@ const config: Config = {
                             800: "#935F0F",
                             900: "#7A4A09",
                         }
+                    },
+                },
+                dark: {
+                    colors: {
+                        background: "#0b0b0b",
+                        foreground: "#ECEDEE",
+
+                        content1: "#111111",
+                        content2: "#181818",
+
+                        primary: {
+                            DEFAULT: "#708EA5",
+                            foreground: "#FFFFFF",
+                        },
                     },
                 },
             },

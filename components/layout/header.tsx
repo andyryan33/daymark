@@ -14,6 +14,7 @@ import {
     DropdownSection,
     useDisclosure
 } from "@heroui/react";
+import clsx from "clsx";
 import { LogOut, Info, User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import NextLink from "next/link";
@@ -44,7 +45,7 @@ export default function Header() {
         <>
             <Navbar 
                 maxWidth="xl" 
-                className="bg-[#FAFAFA]/75 backdrop-blur-md"
+                className="bg-primary-background backdrop-blur-md"
                 classNames={{
                     item: [
                         "flex", "relative", "h-full", "items-center",
@@ -68,11 +69,15 @@ export default function Header() {
                 <NavbarContent className="hidden sm:flex gap-8" justify="center">
                     {navLinks.map((link) => (
                         <NavbarItem key={link.href} isActive={pathname === link.href}>
-                            <Link 
+                            <Link
                                 as={NextLink}
-                                href={link.href} 
-                                color={pathname === link.href ? "primary" : "foreground"}
-                                className="text-sm font-medium"
+                                href={link.href}
+                                className={clsx(
+                                    "text-sm font-medium transition-colors",
+                                    pathname === link.href
+                                        ? "text-primary"
+                                        : "text-primary-900 hover:text-primary"
+                                )}
                             >
                                 {link.label}
                             </Link>
@@ -85,23 +90,26 @@ export default function Header() {
                         <DropdownTrigger>
                             <Avatar
                                 isBordered
-                                as="button"
-                                className="transition-transform"
                                 color="primary"
-                                name={fullName} 
+                                classNames={{
+                                    base: "ring-offset-primary-foreground",
+                                    
+                                }}
+                                name={fullName}
                                 size="sm"
                                 src={avatarUrl}
                             />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="faded" disabledKeys={["user"]}>
                             <DropdownSection title="Signed in as">
-                                <DropdownItem key="user" textValue={fullName} startContent={<User size={18} />}>
+                                <DropdownItem key="user" textValue={fullName} startContent={<User size={18} />} className="text-foreground-900">
                                     {fullName}
                                 </DropdownItem>
                             </DropdownSection>
 
                             <DropdownSection title="Application">
                                 <DropdownItem 
+                                className="text-foreground-900"
                                     key="about" 
                                     onPress={aboutDisclosure.onOpen}
                                     startContent={<Info size={18} />}
@@ -109,6 +117,7 @@ export default function Header() {
                                     About
                                 </DropdownItem>
                                 <DropdownItem 
+                                className="text-foreground-900"
                                     key="logout" 
                                     color="danger"
                                     startContent={<LogOut size={18} />}
