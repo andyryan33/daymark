@@ -56,7 +56,8 @@ export default function NotesStep({
                 isInvalid={isNearLimit}
                 errorMessage={`${charCount} / ${MAX_CHARS}`}
                 classNames={{
-                    inputWrapper: "border-none hover:bg-default-200"
+                    inputWrapper: "border-none hover:bg-default-200",
+                    input: "text-foreground-900"
                 }}
             />
 

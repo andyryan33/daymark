@@ -79,6 +79,10 @@ export default function TodayHeader({
                                 setIsOpen(false);
                                 onSelectDate(date.toString());
                             }}
+                            classNames={{
+                                cellButton: "text-foreground-900",
+                                pickerItem: "text-foreground-900"
+                            }}
                         />
                     </PopoverContent>
                 </Popover>
